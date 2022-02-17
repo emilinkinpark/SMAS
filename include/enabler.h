@@ -4,7 +4,7 @@
 
 /**** FUNCTION ENABLE ****/
 #define ENABLE_WIFI   // Enables WiFi Connectivity
-#define ENABLE_I2C    // Enables I2C
+//#define ENABLE_I2C    // Enables I2C
 #define ENABLE_MQTT   // Connects to MQTT Server and Starts OTA
 #define ENABLE_OTA    // Starts OTA
 #define ENABLE_MODBUS // Enables Modbus

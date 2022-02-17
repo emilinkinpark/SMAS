@@ -1,24 +1,7 @@
-/* The codes are licensed under GNU LESSER GENERAL PUBLIC LICENSE
- *   Copyright © 2007 Free Software Foundation, Inc. <https://fsf.org/>
- *   More on the lincense at <https://www.gnu.org/licenses/lgpl-3.0.en.html>
- *   Everyone is permitted to copy and distribute verbatim copies of this license document, but changing is not allowed.
- *
- *   Acknowledgement: The project uses a lot of free libraries from different contributors. An special thanks to all hard working software people.
- *                    Specific acknowledgement is made into the seperate files in the include folder.
- *
- *   The purpose of this project is to create a Weather Station Data Translator for Rouf Aquaculture Pvt. Ltd (Proposed) Khulna, Bangladesh Intensive Prawn Farming Project.
- *   The field slave devices talks back to ESP32 (Master) over RS485 Modbus.
- *   The data is taken in and send to MQTT Broker over Wifi
- *
- *   Dedicated to Tyler Goodwin, the mate who influenced me to join the software side;
- *
- */
-
-
 // Do not forget to change IPAddress of ESP32 before uploading; Check wifi_keys.h for more
 
 #include <Arduino.h>
-#include "headers.h"
+#include "headers.h" // Add all headers to the main page here
 
 void setup()
 {
@@ -44,44 +27,53 @@ void loop()
   windSpeed();     // Wind Speed Sensor
   windDir();       // Wind Direction Sensor
   tempHumid();     // Outdoor Humidity and Temperature Sensor
+  DO();            // Dissolved Oxygen Sensor
   rainVol(wsRainclear);
 
 #ifdef ENABLE_MQTT
   // MQTT Publish
-  publish(0, "MQTT/HATCHERY2/heart");
-  subscribe("MQTT/HATCHERY2/rainClear"); // 24 Rain Clear Command Subscribtion
-  publish(wsRainclear, "MQTT/HATCHERY2/rainClear");
-
+  publish(0, "MQTT/TANK1/heart");
+#ifdef ENABLE_RAINVOLUME
+  subscribe("MQTT/TANK1/rainClear"); // 24 Rain Clear Command Subscribtion
+  publish(wsRainclear, "MQTT/TANK1/rainClear");
+#endif
 #ifdef ENABLE_BME680
-  publish(relHum1, "MQTT/HATCHERY2/relativeHumidity");
-  publish(temp1, "MQTT/HATCHERY2/outdoorTemp");
+  publish(relHum1, "MQTT/TANK1/relativeHumidity");
+  publish(temp1, "MQTT/TANK1/outdoorTemp");
 #endif
 
 #ifdef ENABLE_BH1750
-  publish(lux, "MQTT/HATCHERY2/lightIntensity");
+  publish(lux, "MQTT/TANK1/lightIntensity");
 #endif
 
 #ifdef ENABLE_DS18B20
-  publish(temperature_1, "MQTT/HATCHERY2/soilTemp");
+  publish(temperature_1, "MQTT/TANK1/Temperature");
 #endif
 
 #ifdef ENABLE_MOISTSENSOR
-  publish(soilmoistperc, "MQTT/HATCHERY2/soilmoisture");
+  publish(soilmoistperc, "MQTT/TANK1/soilmoisture");
 #endif
 
 #ifdef ENABLE_RAINVOLUME
-  publish(rainvol, "MQTT/HATCHERY2/rainVolume");
+  publish(rainvol, "MQTT/TANK1/rainVolume");
 #endif
 
 #ifdef ENABLE_WINDSPEED
-  publish(windspeed, "MQTT/HATCHERY2/windSpeed");
+  publish(windspeed, "MQTT/TANK1/windSpeed");
 #endif
 
 #ifdef ENABLE_WINDDIR
-  publish(winddir, "MQTT/HATCHERY2/windDirection");
+  publish(winddir, "MQTT/TANK1/windDirection");
 #endif
 
-  publish(1, "MQTT/HATCHERY2/heart");
+#ifdef ENABLE_DO
+  publish(averagedomgl, "MQTT/TANK1/DO");
+  publish(doTemp, "MQTT/TANK1/botTemp");
+#endif
+
+  publish(1, "MQTT/TANK1/heart");
 #endif
   vTaskDelay(2000 / portTICK_PERIOD_MS);
 }
+
+// Do not forget to change IPAddress of ESP32 before uploading; Check wifi_keys.h for more

@@ -26,21 +26,22 @@ float outdoorrealtiveHumidity = 0.00;
 // Rainfall Volume Gauge
 float rainvol = 0.00;
 
-Smoothed<float> AverageDOmgl;
-
-float averagedomgl = 0.00;
-
 // DO and pH sensor ID
 #define O2_slaveID 0x0E
 #define O2_slaveID_DEC 14
 
+/* // Deprecated since 2021
 #define pH_slaveID 0x01
 #define pH_slaveID_DEC 1
+*/
 
 // DO variables
+Smoothed<float> AverageDOmgl;
+
 boolean doHeart = 0;
 float DOmgl = 0.00;
 float doTemp = 0.00;
+float averagedomgl = 0.00;
 
 void sensInit()
 {
@@ -194,6 +195,7 @@ bool rainVol(bool clear)
 
 void DO()
 {
+#ifdef ENABLE_DO
   /* Flow Chart
                 Start Measurement -> Delay 2 seconds ->               Request DO and Temp Data
                                                                 |                                     ^
@@ -303,9 +305,14 @@ void DO()
     doHeart = 0;
 #ifdef ENABLE_DO_DEBUG
     Serial.println("DO HEART WORKING :)");
-#endif ENABLE_DO_DEBUG
+    Serial.print("DO: ");
+    Serial.println(AverageDOmgl);
+    Serial.print("DO Temperature: ");
+    Serial.println(doTemp);
+#endif
     vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
+#endif
 }
 
 /* // Deprecated in 2021 versions
