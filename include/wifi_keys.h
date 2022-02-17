@@ -10,6 +10,7 @@
 
 // Declare static IPs of device
 /* Static IP
+10.0.1.5 -> Test                //Always to be remain free for prototyping and testing
 10.0.1.6 -> HATCHERY2          OTA Address 10.0.1.6:4000/update
 10.0.1.12 -> weatherStation    OTA Address 10.0.1.12:4000/update
 10.0.1.19 -> Pond8             OTA Address 10.0.1.19:4000/update

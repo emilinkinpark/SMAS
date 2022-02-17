@@ -14,6 +14,9 @@
  *
  */
 
+
+// Do not forget to change IPAddress of ESP32 before uploading; Check wifi_keys.h for more
+
 #include <Arduino.h>
 #include "headers.h"
 
