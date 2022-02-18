@@ -32,46 +32,46 @@ void loop()
 
 #ifdef ENABLE_MQTT
   // MQTT Publish
-  publish(0, "MQTT/TANK1/heart");
+  publish(0, "MQTT/SCAL2/heart");
 #ifdef ENABLE_RAINVOLUME
-  subscribe("MQTT/TANK1/rainClear"); // 24 Rain Clear Command Subscribtion
-  publish(wsRainclear, "MQTT/TANK1/rainClear");
+  subscribe("MQTT/SCAL2/rainClear"); // 24 Rain Clear Command Subscribtion
+  publish(wsRainclear, "MQTT/SCAL2/rainClear");
 #endif
 #ifdef ENABLE_BME680
-  publish(relHum1, "MQTT/TANK1/relativeHumidity");
-  publish(temp1, "MQTT/TANK1/outdoorTemp");
+  publish(relHum1, "MQTT/SCAL2/relativeHumidity");
+  publish(temp1, "MQTT/SCAL2/outdoorTemp");
 #endif
 
 #ifdef ENABLE_BH1750
-  publish(lux, "MQTT/TANK1/lightIntensity");
+  publish(lux, "MQTT/SCAL2/lightIntensity");
 #endif
 
 #ifdef ENABLE_DS18B20
-  publish(temperature_1, "MQTT/TANK1/Temperature");
+  publish(temperature_1, "MQTT/SCAL2/Temperature");
 #endif
 
 #ifdef ENABLE_MOISTSENSOR
-  publish(soilmoistperc, "MQTT/TANK1/soilmoisture");
+  publish(soilmoistperc, "MQTT/SCAL2/soilmoisture");
 #endif
 
 #ifdef ENABLE_RAINVOLUME
-  publish(rainvol, "MQTT/TANK1/rainVolume");
+  publish(rainvol, "MQTT/SCAL2/rainVolume");
 #endif
 
 #ifdef ENABLE_WINDSPEED
-  publish(windspeed, "MQTT/TANK1/windSpeed");
+  publish(windspeed, "MQTT/SCAL2/windSpeed");
 #endif
 
 #ifdef ENABLE_WINDDIR
-  publish(winddir, "MQTT/TANK1/windDirection");
+  publish(winddir, "MQTT/SCAL2/windDirection");
 #endif
 
 #ifdef ENABLE_DO
-  publish(averagedomgl, "MQTT/TANK1/DO");
-  publish(doTemp, "MQTT/TANK1/botTemp");
+  publish(averagedomgl, "MQTT/SCAL2/DO");
+  publish(doTemp, "MQTT/SCAL2/tempBot");
 #endif
 
-  publish(1, "MQTT/TANK1/heart");
+  publish(1, "MQTT/SCAL2/heart");
 #endif
   vTaskDelay(2000 / portTICK_PERIOD_MS);
 }
