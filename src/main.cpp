@@ -1,5 +1,8 @@
-// Do not forget to change IPAddress of ESP32 before uploading; Check wifi_keys.h for more
-
+/* Checklist before uploading to device, remember to KISS (Keep It Super Simple)
+* Do not forget to change IPAddress of ESP32 before uploading; Check wifi_keys.h for more
+* To enable or disable type of sensor, check enabler.h
+* Always Change MQTT Topic using Find and Replace; usually MQTT/Test would be used for testing
+*/
 #include <Arduino.h>
 #include "headers.h" // Add all headers to the main page here
 
@@ -32,46 +35,46 @@ void loop()
 
 #ifdef ENABLE_MQTT
   // MQTT Publish
-  publish(0, "MQTT/SCAL2/heart");
+  publish(0, "MQTT/TEST/heart");
 #ifdef ENABLE_RAINVOLUME
-  subscribe("MQTT/SCAL2/rainClear"); // 24 Rain Clear Command Subscribtion
-  publish(wsRainclear, "MQTT/SCAL2/rainClear");
+  subscribe("MQTT/TEST/rainClear"); // 24 Rain Clear Command Subscribtion
+  publish(wsRainclear, "MQTT/TEST/rainClear");
 #endif
 #ifdef ENABLE_BME680
-  publish(relHum1, "MQTT/SCAL2/relativeHumidity");
-  publish(temp1, "MQTT/SCAL2/outdoorTemp");
+  publish(relHum1, "MQTT/TEST/relativeHumidity");
+  publish(temp1, "MQTT/TEST/outdoorTemp");
 #endif
 
 #ifdef ENABLE_BH1750
-  publish(lux, "MQTT/SCAL2/lightIntensity");
+  publish(lux, "MQTT/TEST/lightIntensity");
 #endif
 
 #ifdef ENABLE_DS18B20
-  publish(temperature_1, "MQTT/SCAL2/Temperature");
+  publish(temperature_1, "MQTT/TEST/Temperature");
 #endif
 
 #ifdef ENABLE_MOISTSENSOR
-  publish(soilmoistperc, "MQTT/SCAL2/soilmoisture");
+  publish(soilmoistperc, "MQTT/TEST/soilmoisture");
 #endif
 
 #ifdef ENABLE_RAINVOLUME
-  publish(rainvol, "MQTT/SCAL2/rainVolume");
+  publish(rainvol, "MQTT/TEST/rainVolume");
 #endif
 
 #ifdef ENABLE_WINDSPEED
-  publish(windspeed, "MQTT/SCAL2/windSpeed");
+  publish(windspeed, "MQTT/TEST/windSpeed");
 #endif
 
 #ifdef ENABLE_WINDDIR
-  publish(winddir, "MQTT/SCAL2/windDirection");
+  publish(winddir, "MQTT/TEST/windDirection");
 #endif
 
 #ifdef ENABLE_DO
-  publish(averagedomgl, "MQTT/SCAL2/DO");
-  publish(doTemp, "MQTT/SCAL2/tempBot");
+  publish(averagedomgl, "MQTT/TEST/DO");
+  publish(doTemp, "MQTT/TEST/tempBot");
 #endif
 
-  publish(1, "MQTT/SCAL2/heart");
+  publish(1, "MQTT/TEST/heart");
 #endif
   vTaskDelay(2000 / portTICK_PERIOD_MS);
 }
