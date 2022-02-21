@@ -231,7 +231,7 @@ void DO()
 
       doTemp = floatTOdecimal(o2[3], o2[4], o2[5], o2[6]);
 
-      if (doTemp == 0.00) // Safety measure for keeping DO sensor internal temperature sensor from not working
+      if (doTemp == 0.00) // Safety measure if DO sensor internal temperature sensor from not working
       {
         doTemp = 25.00;
       }
@@ -286,7 +286,7 @@ void DO()
     Serial.println("DO Measurement Complete");
 #endif
 
-    averagedomgl = AverageDOmgl.get(); // Stores the average value
+    averagedomgl = AverageDOmgl.get(); // Stores the average value into variable
 
     if (isnan(averagedomgl) != 0.00) // Checks Error Data Received
     {
