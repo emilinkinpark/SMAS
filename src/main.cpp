@@ -76,7 +76,7 @@ void loop()
 
   publish(1, "MQTT/SCAL1/heart");
 #endif
-  vTaskDelay(2000 / portTICK_PERIOD_MS);
+  vTaskDelay(10000 / portTICK_PERIOD_MS);
 }
 
 // Do not forget to change IPAddress of ESP32 before uploading; Check wifi_keys.h for more
