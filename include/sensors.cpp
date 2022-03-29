@@ -2,7 +2,6 @@
  */
 
 #include "modbus.cpp"
-
 #include "conversions.cpp"
 #include <Smoothed.h>
 #include "enabler.h"
