@@ -1,10 +1,10 @@
 #include <Adafruit_ADS1X15.h>
 #include "enabler.h"
-
+#include "globalvar.h"
 Adafruit_ADS1115 ads; /* Use this for the 16-bit version */
                       // Adafruit_ADS1015 ads;     /* Use this for the 12-bit version */
 
-int16_t results;
+
 
 void ads_setup(void)
 {

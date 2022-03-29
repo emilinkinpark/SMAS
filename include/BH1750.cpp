@@ -1,6 +1,6 @@
 #include <BH1750.h>
 #include "enabler.h"
-float lux = 0.00;
+#include "globalvar.h"
 
 BH1750 lightMeter(0x23);
 

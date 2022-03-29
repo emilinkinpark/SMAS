@@ -1,11 +1,13 @@
 /*
   MQTT Client Powered by AsyncMqttClient
 */
+#ifndef MQTT_H_INCLUDED
+
+#define MQTT_H_INCLUDED
 
 #include "mqtt_variables.h"
 #include "enabler.h"
-// Subscription Variables
-bool wsRainclear = false;
+#include "mqttsub.cpp"
 
 // Class Declaration
 AsyncMqttClient mqttClient;
@@ -49,17 +51,6 @@ void onMqttConnect(bool sessionPresent) /// Check for mqtt publish and subscribe
   Serial.println("Connected to MQTT.");
   Serial.print("Session present: ");
   Serial.println(sessionPresent);
-  // uint16_t packetIdSub = mqttClient.subscribe("test/lol", 2);
-  // Serial.print("Subscribing at QoS 2, packetId: ");
-  // Serial.println(packetIdSub);
-  // mqttClient.publish("test/lol", 0, true, "test 1");
-  // Serial.println("Publishing at QoS 0");
-  // uint16_t packetIdPub1 = mqttClient.publish("test/lol", 1, true, "test 2");
-  // Serial.print("Publishing at QoS 1, packetId: ");
-  // Serial.println(packetIdPub1);
-  // uint16_t packetIdPub2 = mqttClient.publish("test/lol", 2, true, "test 3");
-  // Serial.print("Publishing at QoS 2, packetId: ");
-  // Serial.println(packetIdPub2);
 }
 
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason)
@@ -96,43 +87,8 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
   {
     messageTemp += (char)payload[i];
   }
-
-  if (strcmp(topic, "MQTT/weatherStation/rainClear") == 0)
-  {
-    // Serial.println(messageTemp); // Debugging
-    if (messageTemp == "1")
-    {
-#ifdef ENABLE_RAINVOL_DEBUG
-      Serial.println("Received 1");
-#endif
-      wsRainclear = true;
-    }
-    else if (messageTemp == "1.00")
-    {
-#ifdef ENABLE_RAINVOL_DEBUG
-      Serial.println("Received 1");
-#endif
-      wsRainclear = true;
-    }
-    else if (messageTemp == "0")
-    {
-#ifdef ENABLE_RAINVOL_DEBUG
-      Serial.println("Received 0");
-#endif
-      wsRainclear = false;
-    }
-    else if (messageTemp == "0.00")
-    {
-#ifdef ENABLE_RAINVOL_DEBUG
-      Serial.println("Received 0");
-#endif
-      wsRainclear = false;
-    }
-    else
-    {
-      // Do Nothing
-    }
-  }
+  rainsubscribe(topic, messageTemp);
+  
 }
 
 void onMqttPublish(uint16_t packetId)
@@ -169,7 +125,6 @@ void mqttSeq()
   mqttClient.onPublish(onMqttPublish);
   mqttClient.setServer(MQTT_HOST, MQTT_PORT);
   // mqtt_topic_declaration();               // Deprecated from 2021 versions
-  // connectToWifi();
 }
 
 void mqttInit()
@@ -182,6 +137,7 @@ void mqttInit()
 #endif
 }
 
+#endif /* MQTT_H_INCLUDED */
 // Deprecated from 2021 versions
 /*
 

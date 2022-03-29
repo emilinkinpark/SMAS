@@ -2,14 +2,11 @@
 #include <Adafruit_Sensor.h>
 #include "Adafruit_BME680.h"
 #include "enabler.h"
+#include "globalvar.h"
 
 #define inSense1_ADDRESS 0X77
 
 Adafruit_BME680 inSense1;
-
-float temp1 = 0.00;
-float relHum1 = 0.00;
-float gasRes1 = 0.00; // Not Used
 
 void bme680Init()
 {

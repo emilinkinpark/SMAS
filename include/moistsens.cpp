@@ -1,13 +1,9 @@
 #include "enabler.h"
 #include "Arduino.h"
+#include "globalvar.h"
 
 const int moistsensPin = 34; // ADC Hardware Connected Pin
 
-const int AirVal = 3583;
-const int WaterVal = 1585;
-
-
-uint soilmoistperc = 0;
 int moistsensLoop()
 {
 #ifdef ENABLE_MOISTSENSOR

@@ -1,6 +1,5 @@
 #include <math.h>
-
-#define salinity 11.00
+#include "globalvar.h"
 
 
 float floatTOdecimal(long int byte0, long int byte1, long int byte2, long int byte3) //Floating point Number in Little-endian to decimal conversion

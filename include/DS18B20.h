@@ -8,8 +8,8 @@ The modified bit of the code is owned by Rouf Bangladesh Pty Ltd
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include "enabler.h"
+#include "globalvar.h"
 
-float temperature_1 = 0.00;
 // float temperature_2 = 0.00;
 
 #define ONEWIREBUS 4 // Define OneWire Bus
@@ -27,11 +27,11 @@ void ds18b20init()
 
 void ds18b20Loop()
 {
-    float cond_temp = 0.00;
 #ifdef ENABLE_DS18B20
+    float cond_temp = 0.00;
     sensors.requestTemperatures();
     cond_temp = sensors.getTempCByIndex(0);
-    if (cond_temp >= 0.00 && cond_temp <= 60.00)  // Ensure temperature reading is within range
+    if (cond_temp >= 0.00 && cond_temp <= 60.00) // Ensure temperature reading is within range
     {
         temperature_1 = cond_temp;
     }

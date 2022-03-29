@@ -6,6 +6,7 @@
 #include "conversions.cpp"
 #include <Smoothed.h>
 #include "enabler.h"
+#include "globalvar.h"
 
 // Serial Pins Definition
 #define UART1_RX 4
@@ -13,22 +14,14 @@
 #define UART2_RX 16
 #define UART2_TX 17
 
-// Wind Speed Sensor JXBS-3001-FS-RS
-float windspeed;
 
-// Wind direction Sensor
-int winddir = 0.00;
-
-// Outdoor Temperature and Relative Humidity Sensor
-float outdoorTemperature = 0.00;
-float outdoorrealtiveHumidity = 0.00;
-
-// Rainfall Volume Gauge
-float rainvol = 0.00;
-
-// DO and pH sensor ID
+// DO Sensor
 #define O2_slaveID 0x0E
 #define O2_slaveID_DEC 14
+
+boolean doHeart = 0;
+float DOmgl = 0.00;
+
 
 /* // Deprecated since 2021
 #define pH_slaveID 0x01
@@ -37,11 +30,6 @@ float rainvol = 0.00;
 
 // DO variables
 Smoothed<float> AverageDOmgl;
-
-boolean doHeart = 0;
-float DOmgl = 0.00;
-float doTemp = 0.00;
-float averagedomgl = 0.00;
 
 void sensInit()
 {
