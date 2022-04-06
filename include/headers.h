@@ -10,5 +10,6 @@
 #include "BH1750.cpp"
 #include "DS18B20.h"
 #include "moistsens.cpp"
+#include "iologic.cpp"
 
 #endif

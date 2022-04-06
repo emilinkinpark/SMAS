@@ -12,34 +12,32 @@ The modified bit of the code is owned by Rouf Bangladesh Pty Ltd
 
 // float temperature_2 = 0.00;
 
-#define ONEWIREBUS 4 // Define OneWire Bus
+//#define ONEWIREBUS 4 // Define OneWire Bus  // Use this for future Use
+#define ONEWIREBUS 18    // Define OneWire Bus
+#define SECONDWIREBUS 19 // Define OneWire Bus
 
 OneWire oneWire(ONEWIREBUS);
+OneWire secondWire(SECONDWIREBUS);
 
-DallasTemperature sensors(&oneWire);
+DallasTemperature firstSensor(&oneWire);
+DallasTemperature secondSensor(&secondWire);
 
 void ds18b20init()
 {
 #ifdef ENABLE_DS18B20
-    sensors.begin();
+    firstSensor.begin();
+    secondSensor.begin();
 #endif
 }
 
 void ds18b20Loop()
 {
 #ifdef ENABLE_DS18B20
-    float cond_temp = 0.00;
-    sensors.requestTemperatures();
-    cond_temp = sensors.getTempCByIndex(0);
-    if (cond_temp >= 0.00 && cond_temp <= 60.00) // Ensure temperature reading is within range
-    {
-        temperature_1 = cond_temp;
-    }
-    else
-    {
-        // Do nothing
-    }
-    // temperature_2 = sensors.getTempCByIndex(1);
+
+    firstSensor.requestTemperatures();
+    temperature_1 = firstSensor.getTempCByIndex(0);
+    secondSensor.requestTemperatures();
+    temperature_2 = secondSensor.getTempCByIndex(0);
 
 #endif
 
@@ -47,9 +45,9 @@ void ds18b20Loop()
     Serial.print("Temperature 1: ");
     Serial.print(temperature_1);
     Serial.println(" °C");
-    // Serial.print("Temperature 2: ");
-    // Serial.print(temperature_2);
-    // Serial.println(" °C");
+    Serial.print("Temperature 2: ");
+    Serial.print(temperature_2);
+    Serial.println(" °C");
 
 #endif
     vTaskDelay(1000 / portTICK_PERIOD_MS);

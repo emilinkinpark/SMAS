@@ -7,7 +7,7 @@
 
 #include "mqtt_variables.h"
 #include "enabler.h"
-#include "mqttsub.cpp"
+#include "globalvar.h"
 
 // Class Declaration
 AsyncMqttClient mqttClient;
@@ -79,16 +79,65 @@ void onMqttUnsubscribe(uint16_t packetId)
   Serial.println(packetId);
 }
 
+void subscribe(const char *subscribeTopic)
+{
+  mqttClient.subscribe(subscribeTopic, 2);
+}
+
+// float subcribeData(const char *subscribeTopic, char *topic, char *payload)
+// {
+//   float temp;
+
+//   if (strcmp(topic, subscribeTopic) == 0)
+//   {
+//     temp = atof(payload);
+//   }
+//   return temp;
+// }
+
 void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total) // Reads Subscription Data
 {
-  // Receving Subscribed Data
-  String messageTemp;
-  for (int i = 0; i < len; i++)
+  // Insert Subscription Data Format Here;
+
+#ifdef ENABLE_MOTORCONTROL
+  if (strcmp(topic, subTopic[0]) == 0)
   {
-    messageTemp += (char)payload[i];
+    Mode = atof(payload);
   }
-  rainsubscribe(topic, messageTemp);
-  
+#endif
+#ifdef ENABLE_DO
+  if (strcmp(topic, subTopic[1]) == 0)
+  {
+    Salinity = atof(payload);
+  }
+  if (strcmp(topic, subTopic[2]) == 0)
+  {
+    doLow = atof(payload);
+  }
+  if (strcmp(topic, subTopic[3]) == 0)
+  {
+    doHigh = atof(payload);
+  }
+#endif
+#ifdef ENABLE_RAINVOLUME
+  if (strcmp(topic, subTopic[4]) == 0)
+  {
+    wsRainclear = atof(payload);
+  }
+#endif
+
+#ifdef ENABLE_MQTTSUB_DEBUG
+  Serial.print("MODE: ");
+  Serial.println(Mode);
+  Serial.print("SALINITY: ");
+  Serial.println(Salinity);
+  Serial.print("DOLOW: ");
+  Serial.println(doLow);
+  Serial.print("DOHIGH: ");
+  Serial.println(doHigh);
+  Serial.print("RainVol Clear: ");
+  Serial.println(wsRainclear);
+#endif
 }
 
 void onMqttPublish(uint16_t packetId)
@@ -98,16 +147,11 @@ void onMqttPublish(uint16_t packetId)
   Serial.println(packetId);
 }
 
-void publish(float var, const char *publishTopic) // Inputs the variable and sends to the specified topics
+void publish(char var, const char *publishTopic) // Inputs the variable and sends to the specified topics
 {
   char buf[100];
   dtostrf(var, 5, 2, buf);
   mqttClient.publish(publishTopic, 0, false, buf);
-}
-
-void subscribe(const char *subscribeTopic)
-{
-  mqttClient.subscribe(subscribeTopic, 2);
 }
 
 void mqttSeq()
@@ -138,6 +182,7 @@ void mqttInit()
 }
 
 #endif /* MQTT_H_INCLUDED */
+
 // Deprecated from 2021 versions
 /*
 

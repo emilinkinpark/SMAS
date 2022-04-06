@@ -4,8 +4,8 @@
 
 1) local_IP adress must be set accordingly;
 2) tankADDR must be updated
-3) Update Salinity in conversions.cpp 
- 
+3) Update Salinity in conversions.cpp
+
 */
 
 // Declare static IPs of device
@@ -22,7 +22,6 @@
 10.0.1.22 -> Tank3             OTA Address 10.0.1.22:4000/update
 */
 
-
 /*Note for Future, DHCP might be used in the future, a though a reporting database needs to be setup to keep track of the field devices*/
 IPAddress local_IP(10, 0, 1, 5);
 IPAddress gateway(10, 0, 1, 1);
@@ -32,6 +31,6 @@ IPAddress subnet(255, 255, 0, 0);
 #define ssid "MainBase"
 #define pass "Glory001!1"
 #else
-#define ssid "GloryCTRL"   
+#define ssid "GloryCTRL"
 #define pass "Gloryhabib1@1"
 #endif

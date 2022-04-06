@@ -2,7 +2,6 @@
 #include <Adafruit_Sensor.h>
 #include "Adafruit_BME680.h"
 #include "enabler.h"
-#include "globalvar.h"
 
 #define inSense1_ADDRESS 0X77
 
