@@ -1,3 +1,12 @@
+void espReset(){
+    if(reset == true){
+        ESP.restart();
+    }
+    else{
+        //Nothing
+    }
+}
+
 void ioSetup() // Define IO Pins here
 {
 #ifdef ENABLE_CALLINGBELL

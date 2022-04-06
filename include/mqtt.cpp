@@ -98,7 +98,10 @@ void subscribe(const char *subscribeTopic)
 void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total) // Reads Subscription Data
 {
   // Insert Subscription Data Format Here;
-
+  if (strcmp(topic, subTopic[5]) == 0)
+  {
+    reset = atof(payload);
+  }
 #ifdef ENABLE_MOTORCONTROL
   if (strcmp(topic, subTopic[0]) == 0)
   {

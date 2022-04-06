@@ -18,23 +18,23 @@ void wireless(void *Param)
     {
       subscribe(subTopic[i]);
     }
-
+    espReset();     // Resets on MQTT Command
 #ifdef ENABLE_MQTT
     // MQTT Publish
     mqttClient.publish(pubTopic[0], 0, false, "0");
 #ifdef ENABLE_BME680
-   publish(relHum1, pubTopic[2]);
-   publish(temp1, pubTopic[3]);
+    publish(relHum1, pubTopic[2]);
+    publish(temp1, pubTopic[3]);
 #endif
 #ifdef ENABLE_BH1750
     publish(lux, pubTopic[4]);
 #endif
 
 #ifdef ENABLE_DS18B20
-    //publish(temperature_1, pubTopic[5]);
+    // publish(temperature_1, pubTopic[5]);
     publish(temperature_1, pubTopic[14]);
-    publish(temperature_1, pubTopic[15]);
-    
+    publish(temperature_2, pubTopic[15]);
+
 #endif
 
 #ifdef ENABLE_MOISTSENSOR
