@@ -30,14 +30,26 @@ void ds18b20init()
 #endif
 }
 
+float sigCondition(float temp)
+{
+    if (temp > 0 && temp <= 60)
+    {
+        return temp;
+    }
+    else
+    {
+        //
+    }
+}
+
 void ds18b20Loop()
 {
 #ifdef ENABLE_DS18B20
 
     firstSensor.requestTemperatures();
-    temperature_1 = firstSensor.getTempCByIndex(0);
+    temperature_1 = sigCondition(firstSensor.getTempCByIndex(0));
     secondSensor.requestTemperatures();
-    temperature_2 = secondSensor.getTempCByIndex(0);
+    temperature_2 = sigCondition(secondSensor.getTempCByIndex(0));
 
 #endif
 
