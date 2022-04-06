@@ -66,7 +66,7 @@ void wireless(void *Param)
     mqttClient.publish(pubTopic[0], 0, false, "1");
     mqttClient.publish(pubTopic[1], 0, false, WiFi.localIP().toString().c_str());
 #endif
-    vTaskDelay(10000 / portTICK_PERIOD_MS);
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
 

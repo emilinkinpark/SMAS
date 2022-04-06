@@ -6,14 +6,14 @@
 #define ENABLE_WIFI   // Enables WiFi Connectivity
 //#define ENABLE_I2C    // Enables I2C
 #define ENABLE_MQTT   // Connects to MQTT Server and Starts OTA
-//#define ENABLE_OTA    // Starts OTA
+#define ENABLE_OTA    // Starts OTA
 //#define ENABLE_MODBUS // Enables Modbus
 
 /**** SENSOR ENABLE ****/
 //#define ENABLE_BME680 // BME680 TEMPERATURE AND HUMIDITY SENSOR ENABLE (I2C)
 // #define ENABLE_BH1750 // BH1750 LIGHT INTENSITY SENSOR ENABLE (I2C)
 // #define ENABLE_ADS1115 // ADS1115 ADC Reading ENABLE (I2C)
-// #define ENABLE_DS18B20     // DS18B20 Digital Temeperature Sensor (One Wire)
+//#define ENABLE_DS18B20     // DS18B20 Digital Temeperature Sensor (One Wire)
 // #define ENABLE_MOISTSENSOR // Moisture Sensor (ADC)
 // #define ENABLE_WINDSPEED   // WIND SPEED ENABLE (MODBUS)
 // #define ENABLE_WINDDIR     // WIND DIRECTION ENABLE (MODBUS)
