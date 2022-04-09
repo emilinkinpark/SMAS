@@ -18,7 +18,6 @@ void wireless(void *Param)
     {
       subscribe(subTopic[i]);
     }
-    espReset();     // Resets on MQTT Command
 #ifdef ENABLE_MQTT
     // MQTT Publish
     mqttClient.publish(pubTopic[0], 0, false, "0");
@@ -95,6 +94,8 @@ void allSensors(void *Param)
 
 void ioControl(void *Param)
 {
+  espReset(); // Resets on MQTT Command
+
   ioSetup();
 
   for (;;)
@@ -131,7 +132,6 @@ void ioControl(void *Param)
       break;
     }
 #endif
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
 
