@@ -10,7 +10,7 @@ void otaSeq()
 {
   while (WiFi.status() != WL_CONNECTED)
   {
-    vTaskDelay(500 / portTICK_PERIOD_MS);
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
 
     Serial.print(".");
   }
