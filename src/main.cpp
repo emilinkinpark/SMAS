@@ -30,10 +30,11 @@ void wireless(void *Param)
 #endif
 
 #ifdef ENABLE_DS18B20
-    // publish(temperature_1, pubTopic[5]);
+    publish(temperature_1, pubTopic[5]);
+    #ifdef ENABLE_DS18B20_MULTI
     publish(temperature_1, pubTopic[14]);
     publish(temperature_2, pubTopic[15]);
-
+    #endif
 #endif
 
 #ifdef ENABLE_MOISTSENSOR

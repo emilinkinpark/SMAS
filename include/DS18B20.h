@@ -10,22 +10,26 @@ The modified bit of the code is owned by Rouf Bangladesh Pty Ltd
 #include "enabler.h"
 #include "globalvar.h"
 
-// float temperature_2 = 0.00;
 
-//#define ONEWIREBUS 4 // Define OneWire Bus  // Use this for future Use
-#define ONEWIREBUS 18    // Define OneWire Bus
-#define SECONDWIREBUS 19 // Define OneWire Bus
+#define ONEWIREBUS 4 // Define OneWire Bus  // Use this for future Use
+//#define ONEWIREBUS 18 // Define OneWire Bus
 
 OneWire oneWire(ONEWIREBUS);
-OneWire secondWire(SECONDWIREBUS);
 
 DallasTemperature firstSensor(&oneWire);
+
+#ifdef ENABLE_DS18B20_MULTI
+#define SECONDWIREBUS 19 // Define OneWire Bus
+OneWire secondWire(SECONDWIREBUS);
 DallasTemperature secondSensor(&secondWire);
+#endif
 
 void ds18b20init()
 {
 #ifdef ENABLE_DS18B20
     firstSensor.begin();
+#endif
+#ifdef ENABLE_DS18B20_MULTI
     secondSensor.begin();
 #endif
 }
@@ -48,6 +52,9 @@ void ds18b20Loop()
 
     firstSensor.requestTemperatures();
     temperature_1 = sigCondition(firstSensor.getTempCByIndex(0));
+
+#endif
+#ifdef ENABLE_DS18B20_MULTI
     secondSensor.requestTemperatures();
     temperature_2 = sigCondition(secondSensor.getTempCByIndex(0));
 

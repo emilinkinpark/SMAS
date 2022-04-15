@@ -37,7 +37,7 @@ const char *pubTopic[] = {
     "MQTT/TEST/relativeHumidity",    // 2
     "MQTT/TEST/outdoorTemp",         // 3
     "MQTT/TEST/lightIntensity",      // 4
-    "MQTT/TEST/Temperature",         // 5
+    "MQTT/TEST/temperature",         // 5
     "MQTT/TEST/soilmoisture",        // 6
     "MQTT/TEST/rainVolume",          // 7
     "MQTT/TEST/windSpeed",           // 8
