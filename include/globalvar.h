@@ -12,8 +12,6 @@ float temp1 = 0.00;
 float relHum1 = 0.00;
 float gasRes1 = 0.00; // Not Used
 
-
-
 // DS18B20 variables
 float temperature_1 = 0.00;
 float temperature_2 = 0.00;

@@ -10,8 +10,13 @@ void wireless(void *Param)
 {
   mqttInit(); // Initialising MQTT Parameters, check mqtt.h for more
   otaInit();  // Initialising OTA
+  sensInit(); // Initialising All MODBUS Sensors
+
   for (;;)
   {
+    DO(salinity, 1.60); // Read DO Sensor
+
+    espReset(); // Resets on MQTT Command
     // Subscribe to MQTT Topics
     int sizearr = sizeof(subTopic) / sizeof(subTopic[0]);
     for (int i = 0; i < sizearr; i++)
@@ -31,10 +36,10 @@ void wireless(void *Param)
 
 #ifdef ENABLE_DS18B20
     publish(temperature_1, pubTopic[5]);
-    #ifdef ENABLE_DS18B20_MULTI
+#ifdef ENABLE_DS18B20_MULTI
     publish(temperature_1, pubTopic[14]);
     publish(temperature_2, pubTopic[15]);
-    #endif
+#endif
 #endif
 
 #ifdef ENABLE_MOISTSENSOR
@@ -72,7 +77,6 @@ void wireless(void *Param)
 
 void allSensors(void *Param)
 {
-  sensInit();    // Initialising All MODBUS Sensors
   i2cInit();     // Initialising Default I2C Pins
   bme680Init();  // Intialising BME680
   bh1750Init();  // Initialising BH1750
@@ -87,22 +91,21 @@ void allSensors(void *Param)
     windSpeed();          // Wind Speed Sensor
     windDir();            // Wind Direction Sensor
     tempHumid();          // Outdoor Humidity and Temperature Sensor
-    DO();                 // Dissolved Oxygen Sensor
-
     vTaskDelay(10000 / portTICK_PERIOD_MS);
   }
 }
 
 void ioControl(void *Param)
 {
-  espReset(); // Resets on MQTT Command
 
   ioSetup();
 
   for (;;)
   {
+#ifdef ENABLE_CALLINGBELL
 
     callingbell = digitalRead(16);
+#endif
 
 #ifdef ENABLE_MOTORCONTROL
     switch (Mode)
@@ -140,7 +143,7 @@ void setup()
 {
   Serial.begin(9600);
   xTaskCreatePinnedToCore(wireless, "wireless", 5000, NULL, 1, NULL, 0);
-  xTaskCreatePinnedToCore(allSensors, "allSensors", 10000, NULL, 2, NULL, 1);
+  xTaskCreatePinnedToCore(allSensors, "allSensors", 10000, NULL, 1, NULL, 1);
   xTaskCreatePinnedToCore(ioControl, "pumpControl", 5000, NULL, 1, NULL, 1);
 }
 void loop()

@@ -29,15 +29,15 @@ float floatTOdecimal(long int byte0, long int byte1, long int byte2, long int by
     return D;
 }
 
-float domglcalc(float t, float DOperc) //Temp in deg C, DOperc in %
+float domglcalc(float  sal, float depth, float t, float DOperc) //Temp in deg C, DOperc in %
 {
 
     float T = 273.15 + t; //Temperature in Kelvin
 
     /*Constants*/
-    float const S = salinity;                        //Salinity in ppt
+    float S = sal;                        //Salinity in ppt
     float const atm_pressure = 101.325;          //Atmospheric Pressure in kPa
-    float const water_depth = 1.60;              // Unit of height: m;
+    float  water_depth = depth;              // Unit of height: m;
     float const rho_saltwater = 1023.6;          //Unit of Density: kg/m^3
     float const g = 9.80665;                     // Unit of Acceleration due to gravity: m/s^2
     float pressure = ((rho_saltwater*g*water_depth)/1000) + atm_pressure; //pressure in kPa;

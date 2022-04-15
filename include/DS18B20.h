@@ -33,16 +33,19 @@ void ds18b20init()
     secondSensor.begin();
 #endif
 }
+    float lasttemp=0;
 
 float sigCondition(float temp)
 {
     if (temp > 0 && temp <= 60)
     {
+       lasttemp = temp;
         return temp;
     }
     else
     {
-        //
+        return lasttemp;
+        Serial.print("ELSE: "); Serial.println(lasttemp);
     }
 }
 

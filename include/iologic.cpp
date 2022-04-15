@@ -1,9 +1,12 @@
-void espReset(){
-    if(reset == true){
-        ESP.restart();
+void espReset()
+{
+    if (reset == true)
+    {
+        esp_restart();
     }
-    else{
-        //Nothing
+    else
+    {
+        // Nothing
     }
 }
 
@@ -12,8 +15,10 @@ void ioSetup() // Define IO Pins here
 #ifdef ENABLE_CALLINGBELL
     pinMode(16, INPUT); // Calling Bell Input
 #endif
+#ifdef ENABLE_MOTORCONTROL
 
     pinMode(20, OUTPUT); // Motor Control Output
+#endif
 }
 
 bool motorControl(float DO, float doLow, float doHigh)
@@ -25,6 +30,8 @@ bool motorControl(float DO, float doLow, float doHigh)
         {
             blowerStat = true;
 #ifdef ENABLE_IOCONTROL_DEBUG
+            
+
             Serial.print("Blower Stat: ");
             Serial.println(blowerStat);
 #endif

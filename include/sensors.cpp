@@ -13,14 +13,12 @@
 #define UART2_RX 16
 #define UART2_TX 17
 
-
 // DO Sensor
 #define O2_slaveID 0x0E
 #define O2_slaveID_DEC 14
 
 boolean doHeart = 0;
 float DOmgl = 0.00;
-
 
 /* // Deprecated since 2021
 #define pH_slaveID 0x01
@@ -180,7 +178,7 @@ bool rainVol(bool clear)
   return 0;
 }
 
-void DO()
+void DO(float saline, float depth)
 {
 #ifdef ENABLE_DO
   /* Flow Chart
@@ -230,7 +228,7 @@ void DO()
       float Conv_DOPerc = floatTOdecimal(o2[7], o2[8], o2[9], o2[10]);
       memset(o2, 0, sizeof(o2)); // Empties array
 
-      DOmgl = domglcalc(doTemp, Conv_DOPerc);
+      DOmgl = domglcalc(saline, depth, doTemp, Conv_DOPerc);
 
       if (isnan(DOmgl) != 0.00) // Checks Error Data Received
       {
@@ -250,9 +248,9 @@ void DO()
       if (DOfaultstatus >= 15) // If Sensor does not respond 15 times then, publish error and break;
       {
         doHeart = 0; // Sends out when DO Sensor Fails
-#ifdef ENABLE_DO_DEBUG
+        #ifdef ENABLE_DO_DEBUG
         Serial.println("DO Sensor Failed");
-#endif
+        #endif
         break;
       }
       else
@@ -300,6 +298,7 @@ void DO()
     vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 #endif
+  
 }
 
 /* // Deprecated in 2021 versions
