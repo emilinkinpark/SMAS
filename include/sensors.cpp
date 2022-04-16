@@ -198,7 +198,7 @@ void DO(float saline)
                                                         Send Data to MQTT Broker
 */
   int o2[13]; // O2 buffer length must have a size of 12 bytes
-
+  float tempDO = 0.00;
   byte DOfaultstatus = 0;
 
   // Start Measurement
@@ -215,15 +215,19 @@ void DO(float saline)
       modbusRead(3, O2_slaveID_DEC, 13, o2); // Acquiring Data and saving into o2
       vTaskDelay(100 / portTICK_PERIOD_MS);
 
-      doTemp = floatTOdecimal(o2[3], o2[4], o2[5], o2[6]);
+      tempDO = floatTOdecimal(o2[3], o2[4], o2[5], o2[6]);
 
-      if (doTemp == 0.00) // Safety measure if DO sensor internal temperature sensor from not working
+      if (tempDO >= 0 && tempDO <= 40)
+      {
+        doTemp = tempDO;
+      }
+      else if (doTemp == 0.00) // Safety measure if DO sensor internal temperature sensor from not working
       {
         doTemp = 25.00;
       }
       else
       {
-        // nothing
+        doTemp = 25.00;
       }
 
       float Conv_DOPerc = floatTOdecimal(o2[7], o2[8], o2[9], o2[10]);
