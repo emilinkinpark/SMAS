@@ -32,8 +32,8 @@ void sensInit()
 {
 #ifdef ENABLE_MODBUS
   Serial2.begin(9600, SERIAL_8N1, UART2_RX, UART2_TX); // RX - Green //TX- White
+  AverageDOmgl.begin(SMOOTHED_AVERAGE, 9);             // Initialising Average class
   Serial.println("Sensor Init Complete");
-  AverageDOmgl.begin(SMOOTHED_AVERAGE, 9); // Initialising Average class
 #endif
 }
 
@@ -178,9 +178,10 @@ bool rainVol(bool clear)
   return 0;
 }
 
-void DO(float saline, float depth)
+void DO(float saline)
 {
 #ifdef ENABLE_DO
+
   /* Flow Chart
                 Start Measurement -> Delay 2 seconds ->               Request DO and Temp Data
                                                                 |                                     ^
@@ -226,9 +227,10 @@ void DO(float saline, float depth)
       }
 
       float Conv_DOPerc = floatTOdecimal(o2[7], o2[8], o2[9], o2[10]);
+
       memset(o2, 0, sizeof(o2)); // Empties array
 
-      DOmgl = domglcalc(saline, depth, doTemp, Conv_DOPerc);
+      DOmgl = domglcalc(saline, doTemp, Conv_DOPerc);
 
       if (isnan(DOmgl) != 0.00) // Checks Error Data Received
       {
@@ -248,9 +250,9 @@ void DO(float saline, float depth)
       if (DOfaultstatus >= 15) // If Sensor does not respond 15 times then, publish error and break;
       {
         doHeart = 0; // Sends out when DO Sensor Fails
-        #ifdef ENABLE_DO_DEBUG
+#ifdef ENABLE_DO_DEBUG
         Serial.println("DO Sensor Failed");
-        #endif
+#endif
         break;
       }
       else
@@ -291,14 +293,13 @@ void DO(float saline, float depth)
 #ifdef ENABLE_DO_DEBUG
     Serial.println("DO HEART WORKING :)");
     Serial.print("DO: ");
-    Serial.println(AverageDOmgl);
+    Serial.println(averagedomgl);
     Serial.print("DO Temperature: ");
     Serial.println(doTemp);
 #endif
     vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 #endif
-  
 }
 
 /* // Deprecated in 2021 versions

@@ -17,7 +17,7 @@ void ioSetup() // Define IO Pins here
 #endif
 #ifdef ENABLE_MOTORCONTROL
 
-    pinMode(20, OUTPUT); // Motor Control Output
+    pinMode(12, OUTPUT); // Motor Control Output
 #endif
 }
 

@@ -150,13 +150,6 @@ void onMqttPublish(uint16_t packetId)
   Serial.println(packetId);
 }
 
-void publish(char var, const char *publishTopic) // Inputs the variable and sends to the specified topics
-{
-  char buf[100];
-  dtostrf(var, 5, 2, buf);
-  mqttClient.publish(publishTopic, 0, false, buf);
-}
-
 void mqttSeq()
 {
   mqttReconnectTimer = xTimerCreate("mqttTimer", pdMS_TO_TICKS(2000), pdFALSE, (void *)0, reinterpret_cast<TimerCallbackFunction_t>(connectToMqtt));
@@ -176,6 +169,7 @@ void mqttSeq()
 
 void mqttInit()
 {
+
 #ifdef ENABLE_MQTT
   mqttSeq(); // Initialising MQTT Parameters, check mqtt.h for more
 #endif
