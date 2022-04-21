@@ -6,11 +6,11 @@
 #include <Arduino.h>
 #include "headers.h" // Add all headers to the main page here
 
-TaskHandle_t Task1, Task2, Task3; // FreeRTOS Schedule Handler
+Preferences preferences;
+TaskHandle_t Task1, Task2, Task3, Task4; // FreeRTOS Schedule Handler
 
 void sensors(void *param)
 {
-  Serial.begin(9600);
   sensInit();    // Initialising All MODBUS Sensors
   i2cInit();     // Initialising Default I2C Pins
   bme680Init();  // Intialising BME680
@@ -18,9 +18,7 @@ void sensors(void *param)
   ds18b20init(); // Intialising DS18B20
   for (;;)
   {
-    DO(salinity); // Read DO Sensor
-    // Serial.print("DO: ");
-    // Serial.println(averagedomgl);
+    // DO(salinity);         // Read DO Sensor
     bme680Loop();         // BME680
     bh1750Loop();         // BH1750
     ds18b20Loop();        // DS18B20
@@ -29,7 +27,6 @@ void sensors(void *param)
     windSpeed();          // Wind Speed Sensor
     windDir();            // Wind Direction Sensor
     tempHumid();          // Outdoor Humidity and Temperature Sensor
-
     vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
@@ -47,7 +44,7 @@ void wireless(void *param)
     {
       subscribe(subTopic[i]);
     }
-    espReset(); // Resets on MQTT Command
+    // espReset(); // Resets on MQTT Command
 
 #ifdef ENABLE_MQTT
     // MQTT Publish
@@ -95,8 +92,8 @@ void wireless(void *param)
     mqttClient.publish(pubTopic[11], 0, false, String(doTemp).c_str());
 #endif
 #ifdef ENABLE_MOTORCONTROL
-    mqttClient.publish(pubTopic[12], 0, false, String(blowerStat).c_str());
-
+    mqttClient.publish(pubTopic[12], 0, false, String(motorSTAT).c_str());
+    mqttClient.publish(pubTopic[16], 0, false, String(motorFault).c_str());
 #endif
 #ifdef ENABLE_CALLINGBELL
     mqttClient.publish(pubTopic[13], 0, false, String(callingbell).c_str());
@@ -107,23 +104,21 @@ void wireless(void *param)
 #endif
     vTaskDelay(10000 / portTICK_PERIOD_MS);
   }
+  // free(subTopic); // Empties Stack Memory
 }
 void iologic(void *param)
 {
   ioSetup();
   for (;;)
   {
-#ifdef ENABLE_CALLINGBELL
-    callingbell = digitalRead(16);
-#endif
 
 #ifdef ENABLE_MOTORCONTROL
-    switch (Mode)
+    switch (mode)
     {
     case 1: // Dependant
       salinity = Salinity;
-      blowerStat = motorControl(averagedomgl, doLow, doHigh);
-      if (blowerStat == true)
+      motorSTAT = motorLogic(averagedomgl, doLow, doHigh);
+      if (motorSTAT == true)
       {
         digitalWrite(20, HIGH);
       }
@@ -134,8 +129,8 @@ void iologic(void *param)
       break;
 
     default: // Independant
-      blowerStat = motorControl(averagedomgl, 4.5, 5.0);
-      if (blowerStat == true)
+      motorSTAT = motorLogic(averagedomgl, 4.5, 5.0);
+      if (motorSTAT == true)
       {
         digitalWrite(20, HIGH);
       }
@@ -149,8 +144,35 @@ void iologic(void *param)
   }
 }
 
+void data(void *param)
+{
+  Serial.println("Data Reporting!");
+  preferences.begin("crucial", false);
+
+  // mode = preferences.getBool("mode", false);            // Reads Last State
+  // motorCTRL = preferences.getFloat("motorCTRL", false); // Reads Last State
+  Salinity = preferences.getFloat("salinity", false); // Reads Last State
+  // doLow = preferences.getFloat("doLow", false);         // Reads Last State
+  // doHigh = preferences.getFloat("doHigh", false);       // Reads Last State
+  for (;;)
+  {
+
+    if (Salinity != SalinityTemp)
+    {
+      SalinityTemp = Salinity;
+      preferences.putFloat("salinity", Salinity);
+      Serial.print("Salinity : ");
+      Serial.println(Salinity);
+    }
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
+
+  } // End of Loop
+}
+
 void setup()
 {
+  Serial.begin(9600);
+
   xTaskCreatePinnedToCore(
       sensors,   // Task Function
       "sensors", // Task Name
@@ -176,6 +198,15 @@ void setup()
       1,         // Priority
       &Task3,    // Task Handler
       1);        // Core
+
+  xTaskCreatePinnedToCore(
+      data,   // Task Function
+      "data", // Task Name
+      5000,   // Stack Size
+      NULL,   // Task Function Parameters
+      1,      // Priority
+      &Task4, // Task Handler
+      1);     // Core
 }
 void loop()
 {

@@ -41,8 +41,4 @@ float salinity = 11.00;
 float doTemp = 0.00;
 float averagedomgl = 0.00;
 
-// IO Control
-bool callingbell = false;
-bool blowerStat = false;
-
 #endif /* GLOBALVAR_H_INCLUDED */

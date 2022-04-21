@@ -10,6 +10,7 @@
             "includePath": [
                 "c:/Users/emili/Documents/PlatformIO/Projects/SMAS-main/include",
                 "c:/Users/emili/Documents/PlatformIO/Projects/SMAS-main/src",
+                "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/Preferences/src",
                 "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/ESPmDNS/src",
                 "C:/Users/emili/.platformio/lib/Adafruit BME680 Library",
                 "C:/Users/emili/.platformio/lib/Adafruit Unified Sensor",
@@ -118,7 +119,6 @@
                 "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdate/src",
                 "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdateServer/src",
                 "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/NetBIOS/src",
-                "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/Preferences/src",
                 "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/SD/src",
                 "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/SD_MMC/src",
                 "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/SPIFFS/src",
@@ -135,6 +135,7 @@
                 "path": [
                     "c:/Users/emili/Documents/PlatformIO/Projects/SMAS-main/include",
                     "c:/Users/emili/Documents/PlatformIO/Projects/SMAS-main/src",
+                    "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/Preferences/src",
                     "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/ESPmDNS/src",
                     "C:/Users/emili/.platformio/lib/Adafruit BME680 Library",
                     "C:/Users/emili/.platformio/lib/Adafruit Unified Sensor",
@@ -243,7 +244,6 @@
                     "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdate/src",
                     "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdateServer/src",
                     "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/NetBIOS/src",
-                    "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/Preferences/src",
                     "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/SD/src",
                     "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/SD_MMC/src",
                     "C:/Users/emili/.platformio/packages/framework-arduinoespressif32/libraries/SPIFFS/src",

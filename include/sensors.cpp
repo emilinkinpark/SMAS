@@ -229,7 +229,7 @@ void DO(float saline)
       {
         doTemp = 25.00;
       }
-
+      
       float Conv_DOPerc = floatTOdecimal(o2[7], o2[8], o2[9], o2[10]);
 
       memset(o2, 0, sizeof(o2)); // Empties array

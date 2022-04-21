@@ -84,17 +84,6 @@ void subscribe(const char *subscribeTopic)
   mqttClient.subscribe(subscribeTopic, 2);
 }
 
-// float subcribeData(const char *subscribeTopic, char *topic, char *payload)
-// {
-//   float temp;
-
-//   if (strcmp(topic, subscribeTopic) == 0)
-//   {
-//     temp = atof(payload);
-//   }
-//   return temp;
-// }
-
 void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total) // Reads Subscription Data
 {
   // Insert Subscription Data Format Here;
@@ -105,13 +94,15 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
 #ifdef ENABLE_MOTORCONTROL
   if (strcmp(topic, subTopic[0]) == 0)
   {
-    Mode = atof(payload);
+    mode = atof(payload);
   }
 #endif
 #ifdef ENABLE_DO
   if (strcmp(topic, subTopic[1]) == 0)
   {
     Salinity = atof(payload);
+    Serial.println(payload);
+    Serial.println(Salinity);
   }
   if (strcmp(topic, subTopic[2]) == 0)
   {

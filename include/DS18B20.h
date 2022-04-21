@@ -3,6 +3,9 @@ All rights to the unmodified code goes to Rui Santos from Random Nerd Tutorials
 
 The modified bit of the code is owned by Rouf Bangladesh Pty Ltd
 
+*** A pull up Resistor 470 Ohm Must be connected to Data Pin of DS1280; 
+
+
 */
 
 #include <OneWire.h>
