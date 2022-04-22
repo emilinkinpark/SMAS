@@ -113,33 +113,32 @@ void iologic(void *param)
   {
 
 #ifdef ENABLE_MOTORCONTROL
-    switch (mode)
-    {
-    case 1: // Dependant
-      salinity = Salinity;
-      motorSTAT = motorLogic(averagedomgl, doLow, doHigh);
-      if (motorSTAT == true)
-      {
-        digitalWrite(20, HIGH);
-      }
-      else
-      {
-        digitalWrite(20, LOW);
-      }
-      break;
+    //     switch (mode)
+    //     {
+    //     case 1: // Dependant
+    //       //motorSTAT = motorLogic(averagedomgl, doLvl, doHigh);
+    //       if (motorSTAT == true)
+    //       {
+    //         digitalWrite(20, HIGH);
+    //       }
+    //       else
+    //       {
+    //         digitalWrite(20, LOW);
+    //       }
+    //       break;
 
-    default: // Independant
-      motorSTAT = motorLogic(averagedomgl, 4.5, 5.0);
-      if (motorSTAT == true)
-      {
-        digitalWrite(20, HIGH);
-      }
-      else
-      {
-        digitalWrite(20, LOW);
-      }
-      break;
-    }
+    //     default: // Independant
+    //       motorSTAT = motorLogic(averagedomgl, 4.5, 5.0);
+    //       if (motorSTAT == true)
+    //       {
+    //         digitalWrite(20, HIGH);
+    //       }
+    //       else
+    //       {
+    //         digitalWrite(20, LOW);
+    //       }
+    //       break;
+    //     }
 #endif
   }
 }
@@ -149,21 +148,42 @@ void data(void *param)
   Serial.println("Data Reporting!");
   preferences.begin("crucial", false);
 
-  // mode = preferences.getBool("mode", false);            // Reads Last State
-  // motorCTRL = preferences.getFloat("motorCTRL", false); // Reads Last State
-  Salinity = preferences.getFloat("salinity", false); // Reads Last State
-  // doLow = preferences.getFloat("doLow", false);         // Reads Last State
-  // doHigh = preferences.getFloat("doHigh", false);       // Reads Last State
+  mode = preferences.getBool("mode", false);            // Reads Last State
+  motorCTRL = preferences.getFloat("motorCTRL", false); // Reads Last State
+  Salinity = preferences.getFloat("salinity", false);   // Reads Last State
+  doLow = preferences.getFloat("doLow", 4.5);           // Reads Last State
+  doHigh = preferences.getFloat("doHigh", 5.0);         // Reads Last State
   for (;;)
   {
-
-    if (Salinity != SalinityTemp)
+    //Serial.println("Int DOLow : " + String(doLow) + "Int DO High : " + String(doHigh));
+    if (doLvl != doLvlTemp)
     {
-      SalinityTemp = Salinity;
-      preferences.putFloat("salinity", Salinity);
-      Serial.print("Salinity : ");
-      Serial.println(Salinity);
+      if ((isInteger(doLvl) && length(4, doLvl)) == true) // Checks if DOLvl is Integer and Length is 4
+      {                                                   // Splits DOLvl into DOLow and DO High
+        doLow = ((doLvl / 100) % 100) / 10.00;
+        doHigh = (doLvl % 100) / 10.00;
+        preferences.putFloat("doLow", doLow);
+        preferences.putFloat("doHigh", doHigh);
+        doLvlTemp = doLvl;
+      }
+      else
+      {
+        // Do Nothing;
+      }
+      //Serial.println("DOLvl : " + String(doLvl) + " DOLow : " + String(doLow) + " DO High : " + String(doHigh));
     }
+
+    // if (Salinity != SalinityTemp)
+    // {
+    //   SalinityTemp = Salinity;
+    //   preferences.putFloat("salinity", Salinity);
+    //   Serial.print("Salinity : ");
+    //   Serial.println(Salinity);
+    // }
+
+    // Work in Progress
+
+    // Serial.printf("%f %f\n", na, nb);
     vTaskDelay(5000 / portTICK_PERIOD_MS);
 
   } // End of Loop

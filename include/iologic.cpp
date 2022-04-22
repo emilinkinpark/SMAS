@@ -1,3 +1,35 @@
+bool isInteger(float number)
+{
+  if (number == ((int)number))
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+bool length(int lengthAllowed, int number)
+{
+  int a = 0;
+  while (number > 0)
+  {
+    number /= 10;
+    a++;
+  }
+  if (lengthAllowed == a)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+
+
 void espReset()
 {
     if (reset == true)

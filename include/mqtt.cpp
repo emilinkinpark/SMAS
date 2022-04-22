@@ -95,22 +95,32 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
   if (strcmp(topic, subTopic[0]) == 0)
   {
     mode = atof(payload);
+    Serial.println("mode: "+String(mode));
   }
-#endif
-#ifdef ENABLE_DO
   if (strcmp(topic, subTopic[1]) == 0)
   {
     Salinity = atof(payload);
-    Serial.println(payload);
-    Serial.println(Salinity);
+    Serial.println("Salinity: "+String(Salinity));
   }
   if (strcmp(topic, subTopic[2]) == 0)
   {
-    doLow = atof(payload);
+    doLvl = atof(payload);
+    Serial.println("doLvl: "+String(doLvl));
   }
   if (strcmp(topic, subTopic[3]) == 0)
   {
-    doHigh = atof(payload);
+    motorCTRL = atof(payload);
+    Serial.println("motorCTRL: "+String(motorCTRL));
+  }
+  if (strcmp(topic, subTopic[4]) == 0)
+  {
+    reset = atof(payload);
+    Serial.println("reset: "+String(reset));
+  }
+  if (strcmp(topic, subTopic[5]) == 0)
+  {
+    clear = atof(payload);
+    Serial.println("clear: "+String(clear));
   }
 #endif
 #ifdef ENABLE_RAINVOLUME

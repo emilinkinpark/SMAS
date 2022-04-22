@@ -24,6 +24,7 @@ int motorCTRL;
 bool motorFault;
 bool motorSTAT;
 float Salinity;
+int doLvl;
 float doLow;
 float doHigh;
 
@@ -32,6 +33,7 @@ float doHigh;
 bool modeTemp;
 bool motorControlTemp;
 float SalinityTemp;
+int doLvlTemp;
 float doLowTemp;
 float doHighTemp;
 bool clearTemp;
@@ -40,12 +42,11 @@ bool clearTemp;
 const char *subTopic[] = {
     "MQTT/TEST/MODE",      // 0
     "MQTT/TEST/SALINITY",  // 1
-    "MQTT/TEST/DOLOW",     // 2
-    "MQTT/TEST/DOHIGH",    // 3
-    "MQTT/TEST/MOTORCTRL"  // 4
-    "MQTT/TEST/rainClear", // 5
-    "MQTT/TEST/reset",     // 6
-    "MQTT/TEST/CLEAR"      // 7
+    "MQTT/TEST/DOLVL",     // 2
+    "MQTT/TEST/MOTORCTRL",  // 3
+    //"MQTT/TEST/rainClear", // 4
+    "MQTT/TEST/reset",     // 5
+    "MQTT/TEST/CLEAR"      // 6
 };
 
 // Publish Topics
