@@ -229,6 +229,10 @@ void data(void *param)
           {
             digitalWrite(MOTORPIN, LOW);
           }
+          else
+          {
+            motorFault = false;
+          }
         }
       }
       motorSTAT = digitalRead(FAULTPIN);
