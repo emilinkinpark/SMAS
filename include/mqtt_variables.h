@@ -11,42 +11,44 @@ extern "C"
 #define MQTT_HOST IPAddress(10, 0, 1, 2) // Broker IP
 #define MQTT_PORT 1883
 
+String hostname = "MQTT";
 // MQTT Subscription Variables
 // Others
-int clear = false; // Clears Flash
+bool reset = false; // Resets ESP32
+int clear = false;  // Clears Flash
 bool wsRainclear = false;
-bool reset = false;
 
-
-// Motor Control and Feedback
-int mode;
-int motorCTRL;
-bool motorFault;
-bool motorSTAT;
+// Motor Control
+int modemc;
 float Salinity;
 int doLvl;
+
+bool mode;
+bool motorCTRL;
+bool motorSTAT;
 float doLow;
 float doHigh;
 
+// Feedback
+bool motorFault;
 
 // Temp Variables to store last state
 bool modeTemp;
 bool motorControlTemp;
+bool modemcTemp;
 float SalinityTemp;
 int doLvlTemp;
 float doLowTemp;
 float doHighTemp;
-bool clearTemp;
 
 // Subscription Topics
 const char *subTopic[] = {
-    "MQTT/TEST/MODE",      // 0
-    "MQTT/TEST/SALINITY",  // 1
-    "MQTT/TEST/DOLVL",     // 2
-    "MQTT/TEST/MOTORCTRL",  // 3
-    //"MQTT/TEST/rainClear", // 4
-    "MQTT/TEST/reset",     // 5
-    "MQTT/TEST/CLEAR"      // 6
+    "MQTT/TEST/MODEMC",   // 0
+    "MQTT/TEST/SALINITY", // 1
+    "MQTT/TEST/DOLVL",    // 2
+    "MQTT/TEST/reset",    // 3
+    "MQTT/TEST/CLEAR"     // 4
+    //,"MQTT/TEST/rainClear" //
 };
 
 // Publish Topics
@@ -64,9 +66,9 @@ const char *pubTopic[] = {
     "MQTT/TEST/windDirection",       // 9
     "MQTT/TEST/DO",                  // 10
     "MQTT/TEST/tempBot",             // 11
-    "MQTT/TEST/motorSTAT",          // 12
+    "MQTT/TEST/MOTORSTAT",           // 12
     "MQTT/TEST/callingBell",         // 13
     "MQTT/TEST/office/temperature",  // 14
     "MQTT/TEST/storage/temperature", // 15
-    "MQTT/TEST/motorFAULT",         // 16
+    "MQTT/TEST/motorFAULT",          // 16
 };

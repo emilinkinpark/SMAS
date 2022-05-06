@@ -18,6 +18,7 @@ void connectToWifi()
 {
   Serial.println("Connecting to Wi-Fi...");
   WiFi.config(local_IP, gateway, subnet, INADDR_NONE, INADDR_NONE);
+  WiFi.setHostname(hostname.c_str());
   WiFi.begin(ssid, pass);
 }
 
@@ -87,40 +88,31 @@ void subscribe(const char *subscribeTopic)
 void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total) // Reads Subscription Data
 {
   // Insert Subscription Data Format Here;
-  if (strcmp(topic, subTopic[5]) == 0)
-  {
-    reset = atof(payload);
-  }
 #ifdef ENABLE_MOTORCONTROL
   if (strcmp(topic, subTopic[0]) == 0)
   {
-    mode = atof(payload);
-    Serial.println("mode: "+String(mode));
+    modemc = atof(payload);
+    Serial.println(" modemc: " + String(modemc));
   }
   if (strcmp(topic, subTopic[1]) == 0)
   {
     Salinity = atof(payload);
-    Serial.println("Salinity: "+String(Salinity));
+    Serial.println("Salinity: " + String(Salinity));
   }
   if (strcmp(topic, subTopic[2]) == 0)
   {
     doLvl = atof(payload);
-    Serial.println("doLvl: "+String(doLvl));
+    Serial.println("doLvl: " + String(doLvl));
   }
   if (strcmp(topic, subTopic[3]) == 0)
   {
-    motorCTRL = atof(payload);
-    Serial.println("motorCTRL: "+String(motorCTRL));
+    reset = atof(payload);
+    Serial.println("reset: " + String(reset));
   }
   if (strcmp(topic, subTopic[4]) == 0)
   {
-    reset = atof(payload);
-    Serial.println("reset: "+String(reset));
-  }
-  if (strcmp(topic, subTopic[5]) == 0)
-  {
     clear = atof(payload);
-    Serial.println("clear: "+String(clear));
+    Serial.println("clear: " + String(clear));
   }
 #endif
 #ifdef ENABLE_RAINVOLUME

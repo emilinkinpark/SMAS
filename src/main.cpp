@@ -4,7 +4,7 @@
  * Always Change MQTT Topic using Find and Replace; usually MQTT/TEST would be used for TESTing
  */
 #include <Arduino.h>
-#include "headers.h" // Add all headers to the main page here
+#include "headers.h"
 
 Preferences preferences;
 TaskHandle_t Task1, Task2, Task3, Task4; // FreeRTOS Schedule Handler
@@ -106,86 +106,146 @@ void wireless(void *param)
   }
   // free(subTopic); // Empties Stack Memory
 }
-void iologic(void *param)
-{
-  ioSetup();
-  for (;;)
-  {
 
-#ifdef ENABLE_MOTORCONTROL
-    //     switch (mode)
-    //     {
-    //     case 1: // Dependant
-    //       //motorSTAT = motorLogic(averagedomgl, doLvl, doHigh);
-    //       if (motorSTAT == true)
-    //       {
-    //         digitalWrite(20, HIGH);
-    //       }
-    //       else
-    //       {
-    //         digitalWrite(20, LOW);
-    //       }
-    //       break;
-
-    //     default: // Independant
-    //       motorSTAT = motorLogic(averagedomgl, 4.5, 5.0);
-    //       if (motorSTAT == true)
-    //       {
-    //         digitalWrite(20, HIGH);
-    //       }
-    //       else
-    //       {
-    //         digitalWrite(20, LOW);
-    //       }
-    //       break;
-    //     }
-#endif
-  }
-}
-
+bool motorInit = true; // Param for Triggering MOTOR PIN Once during cycle
 void data(void *param)
 {
-  Serial.println("Data Reporting!");
-  preferences.begin("crucial", false);
+  ioSetup();
 
-  mode = preferences.getBool("mode", false);            // Reads Last State
-  motorCTRL = preferences.getFloat("motorCTRL", false); // Reads Last State
-  Salinity = preferences.getFloat("salinity", false);   // Reads Last State
-  doLow = preferences.getFloat("doLow", 4.5);           // Reads Last State
-  doHigh = preferences.getFloat("doHigh", 5.0);         // Reads Last State
+  preferences.begin("crucial", false);
+  mode = preferences.getBool("mode", false);           // Reads Last State
+  motorCTRL = preferences.getBool("motorCTRL", false); // Reads Last State
+  // Salinity = preferences.getFloat("salinity", 10.0);  // Reads Last State
+  doLow = preferences.getFloat("doLow", 4.5);   // Reads Last State
+  doHigh = preferences.getFloat("doHigh", 5.0); // Reads Last State
   for (;;)
   {
-    //Serial.println("Int DOLow : " + String(doLow) + "Int DO High : " + String(doHigh));
     if (doLvl != doLvlTemp)
     {
       if ((isInteger(doLvl) && length(4, doLvl)) == true) // Checks if DOLvl is Integer and Length is 4
       {                                                   // Splits DOLvl into DOLow and DO High
         doLow = ((doLvl / 100) % 100) / 10.00;
         doHigh = (doLvl % 100) / 10.00;
-        preferences.putFloat("doLow", doLow);
-        preferences.putFloat("doHigh", doHigh);
         doLvlTemp = doLvl;
       }
       else
       {
         // Do Nothing;
       }
-      //Serial.println("DOLvl : " + String(doLvl) + " DOLow : " + String(doLow) + " DO High : " + String(doHigh));
+
+      if (doLow != doLowTemp)
+      {
+        doLowTemp = doLow;
+        preferences.putFloat("doLow", doLow);
+      }
+      if (doHigh != doHighTemp)
+      {
+        doHighTemp = doHigh;
+        preferences.putFloat("doHigh", doHigh);
+      }
     }
 
-    // if (Salinity != SalinityTemp)
-    // {
-    //   SalinityTemp = Salinity;
-    //   preferences.putFloat("salinity", Salinity);
-    //   Serial.print("Salinity : ");
-    //   Serial.println(Salinity);
-    // }
+    // Mode and Motor Control Logic Starts Here
+    if (modemc == (int)10)
+    {
+      mode = 1;
+      motorCTRL = 0;
+    }
+    else if (modemc == (int)11)
+    {
+      mode = 1;
+      motorCTRL = 1;
+    }
+    else if (modemc == (int)00)
+    {
+      mode = 0;
+      motorCTRL = 0;
+    }
+    else if (modemc == (int)01)
+    {
+      mode = 0;
+      motorCTRL = 1;
+    }
+    else
+    {
+      // Do Nothing
+    }
 
-    // Work in Progress
+    if (mode != modeTemp)
+    {
+      modeTemp = mode;
+      // preferences.putBool("mode", mode);
+    }
+    if (motorCTRL != motorControlTemp)
+    {
+      modeTemp = mode;
+      // preferences.putBool("mode", mode);
+    }
+    // Serial.println("mode " + String(mode) + " Motor Control " + String(motorCTRL));
+    // Mode and Motor Control Logic End
 
-    // Serial.printf("%f %f\n", na, nb);
-    vTaskDelay(5000 / portTICK_PERIOD_MS);
+    if (Salinity != SalinityTemp)
+    {
+      SalinityTemp = Salinity;
+      // preferences.putFloat("salinity", Salinity);
+      Serial.print("Salinity : ");
+      Serial.println(Salinity);
+    }
 
+    // Clear
+
+    if (clear == true) // Clears all preferences data
+    {
+      preferences.clear();
+    }
+    if (reset == true) // Resets ESP32
+    {
+      esp_restart();
+    }
+
+    // Logic
+    int timestart = millis();
+    switch (mode)
+    {
+    case 1:
+      if (motorCTRL == true)
+      {
+        digitalWrite(MOTORPIN, HIGH);
+
+        while (digitalRead(FAULTPIN) != 1) // Fault Conditions Loop
+        {
+          motorSTAT = digitalRead(FAULTPIN);
+          vTaskDelay(500 / portTICK_PERIOD_MS);
+          int timefinal = millis();
+          int prestime = timefinal - timestart;
+          if (prestime >= 5000)
+          {
+            digitalWrite(MOTORPIN, LOW);
+            modemc = 10;
+            motorFault = true;
+            break;
+          }
+          else if(motorCTRL == false)
+          {
+            digitalWrite(MOTORPIN, LOW);
+          }
+        }
+      }
+      motorSTAT = digitalRead(FAULTPIN);
+      // Checks Fault Conditions
+
+      if (motorCTRL == false)
+      {
+        digitalWrite(MOTORPIN, LOW);
+      }
+      
+      break;
+
+    default:
+      // bool blower = motorLogic(averagedomgl, doLow, doHigh);
+      break;
+    }
+    vTaskDelay(2000 / portTICK_PERIOD_MS);
   } // End of Loop
 }
 
@@ -209,24 +269,22 @@ void setup()
       1,          // Priority
       &Task2,     // Task Handler
       0);         // Core
-
-  xTaskCreatePinnedToCore(
-      iologic,   // Task Function
-      "iologic", // Task Name
-      5000,      // Stack Size
-      NULL,      // Task Function Parameters
-      1,         // Priority
-      &Task3,    // Task Handler
-      1);        // Core
-
   xTaskCreatePinnedToCore(
       data,   // Task Function
       "data", // Task Name
       5000,   // Stack Size
       NULL,   // Task Function Parameters
       1,      // Priority
-      &Task4, // Task Handler
+      &Task3, // Task Handler
       1);     // Core
+  // xTaskCreatePinnedToCore(
+  //     iologic,   // Task Function
+  //     "iologic", // Task Name
+  //     5000,      // Stack Size
+  //     NULL,      // Task Function Parameters
+  //     1,         // Priority
+  //     &Task4,    // Task Handler
+  //     1);        // Core
 }
 void loop()
 {

@@ -15,7 +15,7 @@ void otaSeq()
     Serial.print(".");
   }
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-            { request->send(200, "text/plain", "go to update"); });
+            { request->send(200, "text/plain", String(WiFi.localIP().toString()+":4000/update")); });
 
   AsyncElegantOTA.begin(&server); // Start ElegantOTA
   server.begin();
