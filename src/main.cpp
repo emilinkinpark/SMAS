@@ -18,7 +18,7 @@ void sensors(void *param)
   ds18b20init(); // Intialising DS18B20
   for (;;)
   {
-    // DO(salinity);         // Read DO Sensor
+    DO();         // Read DO Sensor
     bme680Loop();         // BME680
     bh1750Loop();         // BH1750
     ds18b20Loop();        // DS18B20
@@ -33,7 +33,8 @@ void sensors(void *param)
 void wireless(void *param)
 {
   mqttInit(); // Initialising MQTT Parameters, check mqtt.h for more
-  otaInit();  // Initialising OTA
+
+  otaInit(); // Initialising OTA
 
   for (;;)
   {
@@ -110,7 +111,7 @@ void wireless(void *param)
 bool motorInit = true; // Param for Triggering MOTOR PIN Once during cycle
 void data(void *param)
 {
-  ioSetup();
+  //ioSetup();
 
   preferences.begin("crucial", false);
   mode = preferences.getBool("mode", false);           // Reads Last State
@@ -120,6 +121,7 @@ void data(void *param)
   doHigh = preferences.getFloat("doHigh", 5.0); // Reads Last State
   for (;;)
   {
+
     if (doLvl != doLvlTemp)
     {
       if ((isInteger(doLvl) && length(4, doLvl)) == true) // Checks if DOLvl is Integer and Length is 4
@@ -225,7 +227,7 @@ void data(void *param)
             motorFault = true;
             break;
           }
-          else if(motorCTRL == false)
+          else if (motorCTRL == false)
           {
             digitalWrite(MOTORPIN, LOW);
           }
@@ -242,10 +244,12 @@ void data(void *param)
       {
         digitalWrite(MOTORPIN, LOW);
       }
-      
+     
       break;
 
     default:
+      motorSTAT = digitalRead(FAULTPIN);
+      
       // bool blower = motorLogic(averagedomgl, doLow, doHigh);
       break;
     }
@@ -256,6 +260,7 @@ void data(void *param)
 void setup()
 {
   Serial.begin(9600);
+  ioSetup(); // Testing IO Pins
 
   xTaskCreatePinnedToCore(
       sensors,   // Task Function
@@ -276,14 +281,14 @@ void setup()
   xTaskCreatePinnedToCore(
       data,   // Task Function
       "data", // Task Name
-      5000,   // Stack Size
+      8000,   // Stack Size
       NULL,   // Task Function Parameters
       1,      // Priority
       &Task3, // Task Handler
       1);     // Core
   // xTaskCreatePinnedToCore(
-  //     iologic,   // Task Function
-  //     "iologic", // Task Name
+  //     webserv,   // Task Function
+  //     "webserv", // Task Name
   //     5000,      // Stack Size
   //     NULL,      // Task Function Parameters
   //     1,         // Priority
