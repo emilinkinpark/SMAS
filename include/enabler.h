@@ -47,6 +47,6 @@
 
 /*** IO Control ***/
 //#define ENABLE_CALLINGBELL    // Calling Bell 
-#define ENABLE_MOTORCONTROL // Enables Ring Blower Control Logic
+//#define ENABLE_MOTORCONTROL // Enables Ring Blower Control Logic
 
 #endif /* ENABLER_H_INCLUDED */

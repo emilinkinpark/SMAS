@@ -178,7 +178,7 @@ bool rainVol(bool clear)
   return 0;
 }
 
-void DO(float saline)
+void DO()
 {
 #ifdef ENABLE_DO
 
@@ -202,7 +202,7 @@ void DO(float saline)
   byte DOfaultstatus = 0;
 
   // Start Measurement
-  modbusMasterTransmit(3, O2_slaveID, 0x03, 0x25, 0x00, 0x00, 0x01); // Serial2 used for Transceive Data
+  modbusMasterTransmit(O2_slaveID, 0x03, 0x25, 0x00, 0x00, 0x01); // Serial2 used for Transceive Data
   if (Serial2.available() > 0)
   {
     serial_flush_buffer(3); // Cleaning Response
@@ -210,9 +210,9 @@ void DO(float saline)
 
     for (byte count = 0; count <= 10; count++) // Receiving DO data 10 times and averaging
     {
-      modbusMasterTransmit(3, O2_slaveID, 0x03, 0x26, 0x00, 0x00, 0x04); // Request Data Block from Sensor
+      modbusMasterTransmit(O2_slaveID, 0x03, 0x26, 0x00, 0x00, 0x04); // Request Data Block from Sensor
 
-      modbusRead(3, O2_slaveID_DEC, 13, o2); // Acquiring Data and saving into o2
+      modbusRead(O2_slaveID_DEC, 13, o2); // Acquiring Data and saving into o2
       vTaskDelay(100 / portTICK_PERIOD_MS);
 
       tempDO = floatTOdecimal(o2[3], o2[4], o2[5], o2[6]);
@@ -234,7 +234,7 @@ void DO(float saline)
 
       memset(o2, 0, sizeof(o2)); // Empties array
 
-      DOmgl = domglcalc(saline, doTemp, Conv_DOPerc);
+      DOmgl = domglcalc(doTemp, Conv_DOPerc);
 
       if (isnan(DOmgl) != 0.00) // Checks Error Data Received
       {
@@ -266,7 +266,7 @@ void DO(float saline)
     }
 
     // Stop Measurement
-    modbusMasterTransmit(3, O2_slaveID, 0x03, 0x2E, 0x00, 0x00, 0x01);
+    modbusMasterTransmit(O2_slaveID, 0x03, 0x2E, 0x00, 0x00, 0x01);
 
     if (Serial2.available() > 0)
     {

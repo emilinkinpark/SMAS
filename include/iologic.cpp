@@ -1,3 +1,6 @@
+#ifndef IOLOGIC_H
+#define IOLOGIC_H
+
 bool isInteger(float number)
 {
   if (number == ((int)number))
@@ -94,3 +97,5 @@ bool motorLogic(float DO, float doLow, float doHigh)
     return false;
   }
 }
+
+#endif

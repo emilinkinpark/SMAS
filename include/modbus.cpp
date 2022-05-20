@@ -114,7 +114,7 @@ void serial_flush_buffer(uint8_t serialportnumber)
   }
 }
 
-void modbusMasterTransmit(uint8_t const serialportnumber, uint8_t slave_addr, uint8_t funccode, uint8_t upper_starting_address, uint8_t lower_starting_address, uint8_t upper_length, uint8_t lower_length) // Modbus Transmit Function
+void modbusMasterTransmit(uint8_t slave_addr, uint8_t funccode, uint8_t upper_starting_address, uint8_t lower_starting_address, uint8_t upper_length, uint8_t lower_length) // Modbus Transmit Function
 {
   /*  Working Process
    *  Define the serial port number to define the serial port like 1 - Serial, 2 - Serial1 and 3 - Serial2 
@@ -134,43 +134,6 @@ void modbusMasterTransmit(uint8_t const serialportnumber, uint8_t slave_addr, ui
   uint16_t CRC = crc16(data_stream, 6); //Generating CRC //Length Must be 6
   // Serial.println("Transmitting Start"); //Debugging
 
-  switch (serialportnumber)
-  {
-  case 1: // Serial //Programming Port, use it with care
-          //Serial.println("Case 1");
-    for (int i = 0; i <= 5; i++)
-    {
-      Serial.write(data_stream[i]); //Sending out the data
-      //delay(50);
-      //Serial.println(data_stream[i], HEX);
-    }
-
-    Serial.write(CRC >> 8); //Sending Upper CRC bits i.e High bits
-    Serial.write(CRC);      //Sending Lower CRC bits
-    break;
-    //End of Case 1
-    break;
-
-  case 2: //Serial1
-          //       //Serial.println("Case 2");
-          // for (int i = 0; i <= 7; i++)
-          // {
-          //   Serial1.write(data_stream[i]); //Sending out the data
-          //   //delay(50);
-          //   Serial.write("Data: ");
-          //   Serial.println(i);
-          //   Serial.println(data_stream[i], HEX);
-          // }
-          // //CRC_LOW = CRC;
-          // //Serial1.write(CRC >> 8); //Sending Upper CRC bits i.e High bits
-          // //Serial.println(CRC>>8,HEX);
-          // //Serial1.write(CRC_LOW);      //Sending Lower CRC bits
-
-    // //Serial.println(CRC_LOW,HEX);
-    // break;
-    //End of Case 2
-  case 3: //Serial2
-    //Serial.println("Case 3");
     for (int i = 0; i <= 5; i++)
     {
       Serial2.write(data_stream[i]); //Sending out the data
@@ -179,131 +142,12 @@ void modbusMasterTransmit(uint8_t const serialportnumber, uint8_t slave_addr, ui
     }
     Serial2.write(CRC >> 8); //Sending Upper CRC bits i.e High bits
     Serial2.write(CRC);      //Sending Lower CRC bits
-    break;
-    //End of Case 3
+  
+  
 
-  default:
-    Serial.println("Case Not reached");
-    break;
-
-    //End of Switch
-  }
-
-  // /* CRC Debugging Start */
-  // Serial.println(CRC, HEX);
-  // Serial.println("Transmitting End");
-  // /* CRC Debugging End*/
 }
 
-void modbusSlaveTransmit(uint8_t const serialportnumber, uint8_t slave_addr, uint8_t funccode, uint8_t no_of_bytes, uint8_t data_1, uint8_t data_2, uint8_t data_3, uint8_t data_4) // Modbus Transmit Function
-{
-  /*  Working Process
-   *  Define the serial port number to define the serial port like 1 - Serial, 2 - Serial1 and 3 - Serial2 
-   *  Takes the slave address, starting address and datalength, and stores it into data_stream.
-   *  Generates CRC
-   *  Takes in the serial buffer from data_stream and transfer to slave over Serial2(ESP32 UART2)
-   *  CRC transmitted
-   */
-
-  //    0               1                                2                                    3                                 4                       5
-  //uint8_t data_stream[] = {slave_addr, hex[funccode], hex[upper_starting_address], hex[lower_starting_address], hex[upper_length], hex[lower_length]};
-  uint8_t data_stream[] = {slave_addr, funccode, no_of_bytes, data_1, data_2, data_3, data_4};
-
-  //  01                03                               25                                   00                                00                      01
-
-  vTaskDelay(200 / portTICK_PERIOD_MS); // delay stop mixing up sent data during flash
-  uint16_t CRC = crc16(data_stream, 7); //Generating CRC //Length Must be 6
-  // uint8_t CRC_HIGH = (CRC>>8);
-  // uint8_t CRC_LOW = CRC;
-  // uint8_t data_stream[] = {slave_addr, funccode,  no_of_bytes,  data_1,  data_2,CRC_HIGH,CRC_LOW};
-  // Serial.println("Transmitting Start"); //Debugging
-
-  switch (serialportnumber)
-  {
-  case 1: // Serial //Programming Port, use it with care
-          //Serial.println("Case 1");
-    for (int i = 0; i <= 6; i++)
-    {
-      Serial.write(data_stream[i]); //Sending out the data
-      //delay(50);
-      // Serial.write("Data: "); Serial.println(i);
-      Serial.println(data_stream[i], HEX);
-    }
-    Serial.write(CRC >> 8); //Sending Upper CRC bits i.e High bits
-    Serial.write(CRC);      //Sending Lower CRC bits
-
-    // Serial.println(CRC>>8);
-    //Serial.println((uint8_t)CRC);
-
-    //CRC_LOW = CRC;
-    //Serial1.write(CRC >> 8); //Sending Upper CRC bits i.e High bits
-    //Serial.println(CRC>>8,HEX);
-    //Serial1.write(CRC_LOW);      //Sending Lower CRC bits
-
-    //Serial.println(CRC_LOW,HEX);
-    break;
-    //End of Case 1
-
-  case 2: //Serial1
-          //Serial.println("Case 2");
-    for (int i = 0; i <= 6; i++)
-    {
-      Serial1.write(data_stream[i]); //Sending out the data
-      //delay(50);
-      // Serial.write("Data: "); Serial.println(i); Serial.println(data_stream[i], HEX);
-    }
-    Serial1.write(CRC >> 8); //Sending Upper CRC bits i.e High bits
-    Serial1.write(CRC);      //Sending Lower CRC bits
-
-    // Serial.println(CRC>>8);
-    //Serial.println((uint8_t)CRC);
-
-    //CRC_LOW = CRC;
-    //Serial1.write(CRC >> 8); //Sending Upper CRC bits i.e High bits
-    //Serial.println(CRC>>8,HEX);
-    //Serial1.write(CRC_LOW);      //Sending Lower CRC bits
-
-    //Serial.println(CRC_LOW,HEX);
-    break;
-    //End of Case 2
-  case 3: //Serial2
-    //Serial.println("Case 3");
-    for (int i = 0; i <= 6; i++)
-    {
-      Serial2.write(data_stream[i]); //Sending out the data
-                                     //delay(50);
-                                     // Serial.write("Data: "); Serial.println(i);  Serial.println(data_stream[i], HEX);
-    }
-    Serial2.write(CRC >> 8); //Sending Upper CRC bits i.e High bits
-    Serial2.write(CRC);      //Sending Lower CRC bits
-
-    //Serial.println(CRC>>8);
-    //Serial.println((uint8_t)CRC);
-
-    //CRC_LOW = CRC;
-    //Serial1.write(CRC >> 8); //Sending Upper CRC bits i.e High bits
-    //Serial.println(CRC>>8,HEX);
-    //Serial1.write(CRC_LOW);      //Sending Lower CRC bits
-
-    //Serial.println(CRC_LOW,HEX);
-    break;
-    //End of Case 3
-
-  default:
-    Serial.println("Case Not reached");
-    break;
-
-    //End of Switch
-  }
-
-  // /* CRC Debugging Start */
-  // Serial.println(CRC, HEX);
-  // Serial.println("Transmitting End");
-  // /* CRC Debugging End*/
-  //return lower_length;
-}
-
-void modbusRead(uint8_t serialportnumber, char SlaveID, int datalength, int *buff)
+void modbusRead(char SlaveID, int datalength, int *buff)
 {
   /* Working Process:
    * Define the serial port number to define the serial port like 1 - Serial, 2 - Serial1 and 3 - Serial2 
@@ -314,93 +158,6 @@ void modbusRead(uint8_t serialportnumber, char SlaveID, int datalength, int *buf
 
   char inChar = 0;
   byte buffCount = 0;
-
-  switch (serialportnumber)
-  {
-  case 1: //Serial1 //Caution Programming Port, Do not use for loop purposes.
-          //Serial.println("Case 1");
-
-    while (Serial.available())
-    {
-      while (buffCount <= datalength)
-      {
-        inChar = Serial.read();
-        // Serial.write("Buff Count: "); Serial.println(buffCount); Serial.println(inChar, HEX); //Debugging buffCount and Read Data
-        buff[buffCount] = inChar;
-
-        if (buff[0] != SlaveID) // If SlaveID not Matched; set buffCount = 0; and keep looping
-        {
-          //Serial.println("Salve ID Not Matched");
-          //Serial.println(buff[0],HEX);
-          buffCount = 0;
-          //break;
-        }
-        else
-        {
-          //Serial.println("Salve ID Found");
-          //Serial.println(buff[0],HEX);
-          buffCount++;
-        }
-      }
-
-      if (buffCount == datalength) //Break if Datalength Reached
-      {
-        //Serial.println("End of Loop");
-        //break;
-      }
-      else
-      {
-        continue;
-        //Serial.println("Continuing Loop");
-      }
-      //Serial.println("End of Loop");    //Debugging
-    }
-    //Serial.println("Read Complete");    //Debugging
-    //break;
-    //End of Case 1
-
-  case 2: //Serial1
-    //Serial.println("Case 2");
-    while (Serial1.available())
-    {
-      while (buffCount <= datalength)
-      {
-        inChar = Serial1.read();
-        //Serial.write("Buff Count: "); Serial.println(buffCount);  Serial.println(inChar, HEX); //Debugging buffCount and Read Data
-        buff[buffCount] = inChar;
-
-        if (buff[0] != SlaveID) // If SlaveID not Matched; set buffCount = 0; and keep looping
-        {
-          //Serial.println("Salve ID Not Matched"); Serial.println(buff[0],HEX); //Debugging
-          buffCount = 0;
-          //break;
-        }
-        else
-        {
-          //Serial.println("Salve ID Found");
-          //Serial.println(buff[0],HEX);
-          buffCount++;
-        }
-      }
-
-      if (buffCount == datalength) //Break if Datalength Reached
-      {
-        //Serial.println("End of Loop");
-        //break;
-      }
-      else
-      {
-        continue;
-        //Serial.println("Continuing Loop");
-      }
-      //Serial.println("End of Loop");    //Debugging
-    }
-    //Serial.println("Read Complete");    //Debugging
-    //break;
-    //End of Case 2
-
-  case 3: //Serial2
-    //Serial.println("Case 3");
 
     while (Serial2.available())
     {
@@ -441,39 +198,6 @@ void modbusRead(uint8_t serialportnumber, char SlaveID, int datalength, int *buf
       }
       //Serial.println("End of Loop");    //Debugging
     }
-    //Serial.println("Read Complete");    //Debugging
-    //End of Switch
-  }
-}
-
-void modbus_slave() //Caution: Requires a lot of reliability test on bus with multiple devices
-{
-  // //Modbus Transmit to MOXA
-
-  // /* Listens to Request from MOXA
-  // * Matches the datalength
-  // * Matches the slaveID
-  // *
-  // */
-
-  // temp_transmit = dec_hex16(Temp_Send);
-  // DOmgl_transmit = dec_hex16(DOmgl_Send);
-  // //Modbus Master End
-
-  // //Modbus Slave Start
-  // for (size_t i = 0; i <= 7; i++)
-  // {
-  //   incomingData[i] = Serial1.read();
-  // }
-
-  // if (incomingData[0] == 12)        //Matches Slave ID to Transmit Response Frame
-  // {
-  //   //Serial.println("Serial ID found");
-  //   modbusSlaveTransmit(2, 0x0C, 0x03, 0x04, temp_transmit >> 8, (uint8_t)temp_transmit, DOmgl_transmit >> 8, (uint8_t)DOmgl_transmit);
-  // }
-  // else
-  // {
-  //   ;;//Serial.println("Not Found");
-  // }
-  // //Modbus Slave End
+    
+  
 }

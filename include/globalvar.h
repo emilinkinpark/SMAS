@@ -37,7 +37,7 @@ float outdoorrealtiveHumidity = 0.00;
 float rainvol = 0.00;
 
 // DO sensor variables
-float salinity = 11.00;
+float salinity = 14.00;
 float doTemp = 0.00;
 float averagedomgl = 0.00;
 
