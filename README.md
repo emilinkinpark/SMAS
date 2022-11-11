@@ -5,8 +5,8 @@
 *   Everyone is permitted to copy and distribute verbatim copies of this license document, but changing is not allowed.
 *   
 *   Acknowledgement: The project uses a lot of  libraries from various contributors. We appreciate for their efforts to make coding easier.
-*    
-*   The purpose of this project is to create a Multiple sensor aquiring platform for Rouf Aquaculture Pvt. Ltd (Proposed) Khulna, Bangladesh Intensive Prawn Farming Project. 
-*   
-*   Dedicated to Tyler Goodwin, my good mate whose influence made me join the software side; 
+*  
+*   This firmware is written for the Weather Station at Glory Agro Project Bangladesh for Super Intensive Farming Division.
+*   It has multiple sensor with own mDNS, Webserver and MQTT interfaces for data link and show.
+*   Other hardware protocol includes, UART, I2C and MODBUS
 
