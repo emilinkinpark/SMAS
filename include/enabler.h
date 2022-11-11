@@ -7,6 +7,7 @@
 #define ENABLE_I2C    // Enables I2C
 #define ENABLE_MQTT   // Connects to MQTT Server and Starts OTA
 #define ENABLE_OTA    // Starts OTA
+#define ENABLE_WEBSERV // Enables WEBSERVER at port 80
 #define ENABLE_MODBUS // Enables Modbus
 
 /**** SENSOR ENABLE ****/

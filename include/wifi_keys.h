@@ -28,7 +28,7 @@ IPAddress local_IP(10, 0, 1, 12);
 IPAddress gateway(10, 0, 1, 1);
 IPAddress subnet(255, 255, 0, 0);
 
-String hostname = "ws"; //Use ws.local to access from network
+String hostname = "ws"; //Use "name".local to access from network, " " means character
 
 #ifdef ENABLE_WIFI_DEBUG
 #define ssid "MainBase"
