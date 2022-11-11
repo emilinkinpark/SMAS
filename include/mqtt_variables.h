@@ -11,7 +11,6 @@ extern "C"
 #define MQTT_HOST IPAddress(10, 0, 1, 2) // Broker IP
 #define MQTT_PORT 1883
 
-String hostname = "MQTT";
 // MQTT Subscription Variables
 // Others
 bool reset = false; // Resets ESP32
@@ -59,16 +58,12 @@ const char *pubTopic[] = {
     "MQTT/TEST/relativeHumidity",    // 2
     "MQTT/TEST/outdoorTemp",         // 3
     "MQTT/TEST/lightIntensity",      // 4
-    "MQTT/TEST/temperature",         // 5
+    "MQTT/TEST/dryAirT",             // 5
     "MQTT/TEST/soilmoisture",        // 6
     "MQTT/TEST/rainVolume",          // 7
     "MQTT/TEST/windSpeed",           // 8
     "MQTT/TEST/windDirection",       // 9
     "MQTT/TEST/DO",                  // 10
     "MQTT/TEST/tempBot",             // 11
-    "MQTT/TEST/MOTORSTAT",           // 12
-    "MQTT/TEST/callingBell",         // 13
-    "MQTT/TEST/office/temperature",  // 14
-    "MQTT/TEST/storage/temperature", // 15
-    "MQTT/TEST/motorFAULT",          // 16
+    "MQTT/TEST/soilT",               // 12
 };
