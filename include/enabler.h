@@ -4,22 +4,22 @@
 
 /**** FUNCTION ENABLE ****/
 #define ENABLE_WIFI   // Enables WiFi Connectivity
-//#define ENABLE_I2C    // Enables I2C
+#define ENABLE_I2C    // Enables I2C
 #define ENABLE_MQTT   // Connects to MQTT Server and Starts OTA
 #define ENABLE_OTA    // Starts OTA
 #define ENABLE_MODBUS // Enables Modbus
 
 /**** SENSOR ENABLE ****/
-// #define ENABLE_BME680 // BME680 TEMPERATURE AND HUMIDITY SENSOR ENABLE (I2C)
-// #define ENABLE_BH1750 // BH1750 LIGHT INTENSITY SENSOR ENABLE (I2C)
+ #define ENABLE_BME680 // BME680 TEMPERATURE AND HUMIDITY SENSOR ENABLE (I2C)
+ #define ENABLE_BH1750 // BH1750 LIGHT INTENSITY SENSOR ENABLE (I2C)
 // #define ENABLE_ADS1115 // ADS1115 ADC Reading ENABLE (I2C)
-// #define ENABLE_DS18B20     // DS18B20 Digital Temeperature Sensor (One Wire)
+ #define ENABLE_DS18B20     // DS18B20 Digital Temeperature Sensor (One Wire)
 // #define ENABLE_DS18B20_MULTI // Enables Two DS18B20 Sensors
-// #define ENABLE_MOISTSENSOR // Moisture Sensor (ADC)
-// #define ENABLE_WINDSPEED   // WIND SPEED ENABLE (MODBUS)
-// #define ENABLE_WINDDIR     // WIND DIRECTION ENABLE (MODBUS)
-// #define ENABLE_RAINVOLUME  // RAIN GAUGE ENABLE (MODBUS)
-#define ENABLE_DO          // DO Sensor ENABLE (MODBUS)
+ #define ENABLE_MOISTSENSOR // Moisture Sensor (ADC)
+ #define ENABLE_WINDSPEED   // WIND SPEED ENABLE (MODBUS)
+ #define ENABLE_WINDDIR     // WIND DIRECTION ENABLE (MODBUS)
+ #define ENABLE_RAINVOLUME  // RAIN GAUGE ENABLE (MODBUS)
+//#define ENABLE_DO          // DO Sensor ENABLE (MODBUS)
 
 //#define ENABLE_pH   // pH Sensor ENABLE (MODBUS) // DEPRECATED since 2021
 //#define ENABLE_TEMPHUMID // Temperature and Humidity Sensor (MODBUS) //DEPRECATED from 09102021

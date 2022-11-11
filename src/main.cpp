@@ -18,7 +18,7 @@ void sensors(void *param)
   ds18b20init(); // Intialising DS18B20
   for (;;)
   {
-    DO();         // Read DO Sensor
+    DO();                 // Read DO Sensor
     bme680Loop();         // BME680
     bh1750Loop();         // BH1750
     ds18b20Loop();        // DS18B20
@@ -49,7 +49,8 @@ void wireless(void *param)
 
 #ifdef ENABLE_MQTT
     // MQTT Publish
-    mqttClient.publish(pubTopic[0], 0, false, "0");
+    mqttClient.publish(pubTopic[0], 0, false, "1");
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
 #ifdef ENABLE_BME680
     mqttClient.publish(pubTopic[2], 0, false, String(relHum1).c_str());
     mqttClient.publish(pubTopic[3], 0, false, String(temp1).c_str());
@@ -59,13 +60,8 @@ void wireless(void *param)
 #endif
 
 #ifdef ENABLE_DS18B20
-    mqttClient.publish(pubTopic[5], 0, false, String(temperature_1).c_str());
-
-#ifdef ENABLE_DS18B20_MULTI
-    mqttClient.publish(pubTopic[14], 0, false, String(temperature_1).c_str());
-    mqttClient.publish(pubTopic[15], 0, false, String(temperature_2).c_str());
-
-#endif
+    mqttClient.publish(pubTopic[5], 0, false, String(dryAirT).c_str());
+    mqttClient.publish(pubTopic[12], 0, false, String(soilT).c_str());
 #endif
 
 #ifdef ENABLE_MOISTSENSOR
@@ -92,15 +88,8 @@ void wireless(void *param)
     mqttClient.publish(pubTopic[10], 0, false, String(averagedomgl).c_str());
     mqttClient.publish(pubTopic[11], 0, false, String(doTemp).c_str());
 #endif
-#ifdef ENABLE_MOTORCONTROL
-    mqttClient.publish(pubTopic[12], 0, false, String(motorSTAT).c_str());
-    mqttClient.publish(pubTopic[16], 0, false, String(motorFault).c_str());
-#endif
-#ifdef ENABLE_CALLINGBELL
-    mqttClient.publish(pubTopic[13], 0, false, String(callingbell).c_str());
 
-#endif
-    mqttClient.publish(pubTopic[0], 0, false, "1");
+    mqttClient.publish(pubTopic[0], 0, false, "0");
     mqttClient.publish(pubTopic[1], 0, false, WiFi.localIP().toString().c_str());
 #endif
     vTaskDelay(10000 / portTICK_PERIOD_MS);
@@ -111,7 +100,7 @@ void wireless(void *param)
 bool motorInit = true; // Param for Triggering MOTOR PIN Once during cycle
 void data(void *param)
 {
-  //ioSetup();
+  // ioSetup();
 
   preferences.begin("crucial", false);
   mode = preferences.getBool("mode", false);           // Reads Last State
@@ -244,12 +233,12 @@ void data(void *param)
       {
         digitalWrite(MOTORPIN, LOW);
       }
-     
+
       break;
 
     default:
       motorSTAT = digitalRead(FAULTPIN);
-      
+
       // bool blower = motorLogic(averagedomgl, doLow, doHigh);
       break;
     }

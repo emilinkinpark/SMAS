@@ -20,6 +20,8 @@ void connectToWifi()
   WiFi.config(local_IP, gateway, subnet, INADDR_NONE, INADDR_NONE);
   WiFi.setHostname(hostname.c_str());
   WiFi.begin(ssid, pass);
+  MDNS.begin(hostname.c_str());
+
 }
 
 void connectToMqtt()

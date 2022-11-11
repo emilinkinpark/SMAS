@@ -3,7 +3,7 @@ All rights to the unmodified code goes to Rui Santos from Random Nerd Tutorials
 
 The modified bit of the code is owned by Rouf Bangladesh Pty Ltd
 
-*** A pull up Resistor 470 Ohm Must be connected to Data Pin of DS1280; 
+*** A pull up Resistor 470 Ohm Must be connected to Data Pin of DS1280;
 
 
 */
@@ -13,67 +13,90 @@ The modified bit of the code is owned by Rouf Bangladesh Pty Ltd
 #include "enabler.h"
 #include "globalvar.h"
 
+#ifdef ENABLE_DS18B20
 
 #define ONEWIREBUS 4 // Define OneWire Bus  // Use this for future Use
-//#define ONEWIREBUS 18 // Define OneWire Bus
 
 OneWire oneWire(ONEWIREBUS);
 
-DallasTemperature firstSensor(&oneWire);
+DallasTemperature DS18B20(&oneWire);
 
-#ifdef ENABLE_DS18B20_MULTI
-#define SECONDWIREBUS 19 // Define OneWire Bus
-OneWire secondWire(SECONDWIREBUS);
-DallasTemperature secondSensor(&secondWire);
+DeviceAddress dryAirTemp = {0x28, 0x8D, 0xC7, 0x40, 0x26, 0x20, 0x01, 0xF7};
+DeviceAddress soilTemp = {0x28, 0x02, 0xBC, 0x29, 0x26, 0x20, 0x01, 0x27};
 #endif
 
-void ds18b20init()
-{
-#ifdef ENABLE_DS18B20
-    firstSensor.begin();
+#ifdef ENABLE_DS18B20_DEBUG
+
+int devCount;                    // Number of temperature devices found
+DeviceAddress tempDeviceAddress; // Used to store unknown DS18B20
 #endif
-#ifdef ENABLE_DS18B20_MULTI
-    secondSensor.begin();
-#endif
-}
-    float lasttemp=0;
 
 float sigCondition(float temp)
 {
+    float lasttemp = 0.00;
     if (temp > 0 && temp <= 60)
     {
-       lasttemp = temp;
+        float lasttemp = temp;
         return temp;
     }
     else
     {
         return lasttemp;
-        Serial.print("ELSE: "); Serial.println(lasttemp);
+#ifdef ENABLE_DS18B20_DEBUG
+
+        Serial.print("ELSE: ");
+        Serial.println(lasttemp);
+#endif
     }
+}
+
+void printAddress(DeviceAddress deviceAddress)
+{
+    for (uint8_t i = 0; i < 8; i++)
+    {
+        if (deviceAddress[i] < 16)
+            Serial.print("0");
+        Serial.print(deviceAddress[i], HEX);
+    }
+}
+void ds18b20init()
+{
+#ifdef ENABLE_DS18B20
+    DS18B20.begin();
+#endif
 }
 
 void ds18b20Loop()
 {
 #ifdef ENABLE_DS18B20
-
-    firstSensor.requestTemperatures();
-    temperature_1 = sigCondition(firstSensor.getTempCByIndex(0));
-
-#endif
-#ifdef ENABLE_DS18B20_MULTI
-    secondSensor.requestTemperatures();
-    temperature_2 = sigCondition(secondSensor.getTempCByIndex(0));
-
+    DS18B20.requestTemperatures(); // Request DS18B20 Sensor Data
+    dryAirT = DS18B20.getTempC(dryAirTemp);
+    soilT = DS18B20.getTempC(soilTemp);
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
 #endif
 
 #ifdef ENABLE_DS18B20_DEBUG
-    Serial.print("Temperature 1: ");
-    Serial.print(temperature_1);
-    Serial.println(" °C");
-    Serial.print("Temperature 2: ");
-    Serial.print(temperature_2);
-    Serial.println(" °C");
 
+    devCount = DS18B20.getDeviceCount();
+
+    for (int i = 0; i < devCount; i++)
+    {
+        // Search the wire for address
+        if (DS18B20.getAddress(tempDeviceAddress, i))
+        {
+            // Output the device ID
+            Serial.print("Temperature for device: ");
+            Serial.println(i, DEC);
+            printAddress(tempDeviceAddress);
+            // Print the data
+            float tempC = DS18B20.getTempC(tempDeviceAddress);
+            Serial.print("Temp C: ");
+            Serial.print(tempC);
+        }
+    }
+    Serial.print("dryAirT C: ");
+    Serial.println(dryAirT);
+    Serial.print("soilT C: ");
+    Serial.println(soilT);
 #endif
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
 }

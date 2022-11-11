@@ -35,10 +35,10 @@ float domglcalc(float t, float DOperc) //Temp in deg C, DOperc in %
     float T = 273.15 + t; //Temperature in Kelvin
 
     /*Constants*/
-    float S = salinity;                        //Salinity in ppt
+    float S = salinity;                          //Salinity in ppt
     float const atm_pressure = 101.325;          //Atmospheric Pressure in kPa
-    float  water_depth = 1.60;              // Unit of height: m;
-    float const rho_saltwater = 1023.6;          //Unit of Density: kg/m^3
+    float  water_depth = 1.60;                   // Unit of height: m;
+    float const rho_saltwater = 1023.6;          //Unit of Density: kg/m^3 @ 25 C
     float const g = 9.80665;                     // Unit of Acceleration due to gravity: m/s^2
     float pressure = ((rho_saltwater*g*water_depth)/1000) + atm_pressure; //pressure in kPa;
     float const A1 = -173.4292;

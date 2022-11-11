@@ -42,10 +42,10 @@ void windSpeed() // Wind Speed Sensor
 #ifdef ENABLE_WINDSPEED
   byte buffLength = 8;
   int buff[buffLength];
-  modbusMasterTransmit(3, 0x01, 0x03, 0x00, 0x00, 0x00, 0x02); // Request Data Block from Sensor
+  modbusMasterTransmit(0x01, 0x03, 0x00, 0x00, 0x00, 0x02); // Request Data Block from Sensor
   vTaskDelay(200 / portTICK_PERIOD_MS);
 
-  modbusRead(3, 1, buffLength, buff); // Acquiring Data
+  modbusRead(1, buffLength, buff); // Acquiring Data
   float windspeedConv = buff[4] / 10.00;
   buff[6] = 0;
   // // Error Checking
@@ -77,10 +77,10 @@ void windDir() // Wind Direction Sensor
   byte buffLength = 6;
   int buff[buffLength];
 
-  modbusMasterTransmit(3, 0x02, 0x03, 0x00, 0x00, 0x00, 0x01); // Request Data Block from Sensor
+  modbusMasterTransmit(0x02, 0x03, 0x00, 0x00, 0x00, 0x01); // Request Data Block from Sensor
   vTaskDelay(200 / portTICK_PERIOD_MS);
 
-  modbusRead(3, 2, buffLength, buff); // Acquiring Data
+  modbusRead(2, buffLength, buff); // Acquiring Data
 
   uint winddirtemp = hex16_signedint(buff[3], buff[4]);
   if (winddirtemp >= 0 && winddirtemp <= 360)
@@ -90,7 +90,9 @@ void windDir() // Wind Direction Sensor
   else
   {
     winddir = 0;
+    #ifdef ENABLE_WINDDIR_DEBUG
     Serial.println("Wind Direction Sensor error");
+    #endif
   }
 
   if (Serial2.available() > 0)
@@ -140,7 +142,7 @@ bool rainVol(bool clear)
 #ifdef ENABLE_RAINVOLUME
   if (clear == true)
   {
-    modbusMasterTransmit(3, 0x04, 0x06, 0x01, 0x08, 0x00, 0x01); // Request Data Block from Sensor
+    modbusMasterTransmit(0x04, 0x06, 0x01, 0x08, 0x00, 0x01); // Request Data Block from Sensor
     vTaskDelay(200 / portTICK_PERIOD_MS);
     Serial.println("Rainfall Volume Clear"); // Needs to be done once every 24 hours
 
@@ -154,10 +156,10 @@ bool rainVol(bool clear)
     byte buffLength = 12;
     int buff[buffLength];
 
-    modbusMasterTransmit(3, 0x04, 0x03, 0x00, 0x00, 0x00, 0x04); // Request Data Block from Sensor
+    modbusMasterTransmit(0x04, 0x03, 0x00, 0x00, 0x00, 0x04); // Request Data Block from Sensor
     vTaskDelay(200 / portTICK_PERIOD_MS);
 
-    modbusRead(3, 0x04, buffLength, buff); // Acquiring Data
+    modbusRead(0x04, buffLength, buff); // Acquiring Data
 
     uint timer = hex16_signedint(buff[7], buff[8]);       // Unit: seconds  Internal Timer of the Gauge
     rainvol = hex16_signedint(buff[9], buff[10]) / 10.00; // Unit is in %
