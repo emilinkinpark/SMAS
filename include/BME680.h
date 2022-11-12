@@ -45,7 +45,7 @@ void bme680Loop()
     }
     temp1 = inSense1.temperature;
     relHum1 = inSense1.humidity;
-    pressure = inSense1.pressure;
+    pressure = inSense1.pressure/100.00;
     altitude = inSense1.readAltitude(SEALEVELPRESSURE_HPA);
 
     vTaskDelay(60000 / portTICK_PERIOD_MS);
