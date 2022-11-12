@@ -10,7 +10,9 @@ float lux = 0.00;
 // BME680 variables
 float temp1 = 0.00;
 float relHum1 = 0.00;
-float gasRes1 = 0.00; // Not Used
+float pressure = 0.00;
+float altitude = 0.00;
+//float gasRes1 = 0.00; // Not Used
 
 // DS18B20 variables
 float dryAirT = 0.00;

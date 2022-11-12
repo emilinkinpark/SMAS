@@ -22,7 +22,7 @@
         <span id="time" style="position: relative;width: auto;font-size: xx-large;font-weight: bold;color: green;">
 
         </span>
-        <div id="upcounter" style="color:cyan ;font-size:large; font-weight: bold;"></div>
+        <div id="upcounter" style="color:midnightblue ;font-size:large; font-weight: bold;"></div>
         <div style="position: absolute;top: 8px;right: 16px;">
             <button type="button" style="display: inline-block;height:50px;width:100px;border-radius: 8px;"
                 onclick="ota()">OTA</button>
@@ -39,6 +39,11 @@
             <th style="font-weight: bold; color: darkcyan;">UNIT</th>
         </tr>
         <tbody>
+            <tr>
+                <td><b>Altitude</b></td>
+                <td id="altitude">altitude</td>
+                <td>m</td>
+            </tr>
             <tr>
                 <!-- Data on Rows on Table -->
                 <td><b>Light Intensity</b></td>
@@ -64,6 +69,16 @@
                 <td><b>Humidity</b></td>
                 <td id="rel">rel</td>
                 <td>%</td>
+            </tr>
+            <tr>
+                <td><b>Soil Moisture</b></td>
+                <td id="soilMoist">SoilMoist</td>
+                <td>%</td>
+            </tr>
+            <tr>
+                <td><b>Atm Pressure</b></td>
+                <td id="pressure">pressure</td>
+                <td>hPa</td>
             </tr>
             <tr>
                 <td><b>Rain Gauge</b></td>
@@ -147,7 +162,7 @@
             //clearInterval(downloadTimer);
             timeleft = 11;
         } else {
-            document.getElementById("upcounter").innerHTML = "Page Updates in " + (timeleft - 1);
+            document.getElementById("upcounter").innerHTML = "New Data On Its Way 🚀 " + (timeleft - 1);
         }
         timeleft -= 1;
     }, 1000);
@@ -175,6 +190,10 @@
             console.log("ip", e.data);
             ip = e.data;
         }, false);
+        source.addEventListener('altitude', function (e) {
+            console.log("altitude", e.data);
+            document.getElementById("altitude").innerHTML = e.data;
+        }, false);
         source.addEventListener('lux', function (e) {
             console.log("lux", e.data);
             document.getElementById("lux").innerHTML = e.data;
@@ -194,6 +213,14 @@
         source.addEventListener('rel', function (e) {
             console.log("rel", e.data);
             document.getElementById("rel").innerHTML = e.data;
+        }, false);
+        source.addEventListener('soilMoist', function (e) {
+            console.log("soilMoist", e.data);
+            document.getElementById("soilMoist").innerHTML = e.data;
+        }, false);
+        source.addEventListener('pressure', function (e) {
+            console.log("pressure", e.data);
+            document.getElementById("pressure").innerHTML = e.data;
         }, false);
         source.addEventListener('rain', function (e) {
             console.log("rain", e.data);

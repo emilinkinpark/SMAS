@@ -15,7 +15,6 @@
  #define ENABLE_BH1750 // BH1750 LIGHT INTENSITY SENSOR ENABLE (I2C)
 // #define ENABLE_ADS1115 // ADS1115 ADC Reading ENABLE (I2C)
  #define ENABLE_DS18B20     // DS18B20 Digital Temeperature Sensor (One Wire)
-// #define ENABLE_DS18B20_MULTI // Enables Two DS18B20 Sensors
  #define ENABLE_MOISTSENSOR // Moisture Sensor (ADC)
  #define ENABLE_WINDSPEED   // WIND SPEED ENABLE (MODBUS)
  #define ENABLE_WINDDIR     // WIND DIRECTION ENABLE (MODBUS)

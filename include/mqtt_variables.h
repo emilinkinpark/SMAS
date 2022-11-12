@@ -66,4 +66,9 @@ const char *pubTopic[] = {
     "MQTT/weatherStation/DO",                  // 10
     "MQTT/weatherStation/tempBot",             // 11
     "MQTT/weatherStation/soilT",               // 12
+    "MQTT/weatherStation/atmPressure",         // 13
+    "MQTT/weatherStation/bmeTemp",             // 14
+    "MQTT/weatherStation/altitude"             // 15
+    
+
 };

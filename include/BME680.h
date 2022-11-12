@@ -7,6 +7,9 @@
 
 Adafruit_BME680 inSense1;
 
+#define SEALEVELPRESSURE_HPA (1013.25)
+
+
 void bme680Init()
 {
 #ifdef ENABLE_BME680
@@ -42,6 +45,10 @@ void bme680Loop()
     }
     temp1 = inSense1.temperature;
     relHum1 = inSense1.humidity;
+    pressure = inSense1.pressure;
+    altitude = inSense1.readAltitude(SEALEVELPRESSURE_HPA);
+
+    vTaskDelay(60000 / portTICK_PERIOD_MS);
 // gasRes1 = inSense1.gas_resistance / 1000.0;
 #endif
 #ifdef ENABLE_BME680_DEBUG
@@ -68,6 +75,10 @@ void bme680Loop()
     Serial.println(relHum1);
     Serial.print(F("Sensor 1 Gas = "));
     Serial.println(gasRes1);
+    Serial.print(F("Sensor 1 Pressure = "));
+    Serial.println(pressure);
+    Serial.print(F("Sensor 1 Altitude = "));
+    Serial.println(altitude);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 #endif
 }

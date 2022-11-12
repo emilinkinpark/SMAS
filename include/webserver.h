@@ -106,9 +106,12 @@ void serverLoop()
     events.send(WiFi.localIP().toString().c_str(), "ip", millis());
     events.send(String(lux).c_str(), "lux", millis());
     events.send(String(dryAirT).c_str(), "drya_temp", millis());
-    events.send(String(outdoorTemperature).c_str(), "a_temp", millis());
+    events.send(String(temp1).c_str(), "a_temp", millis());
     events.send(String(soilT).c_str(), "s_temp", millis());
-    events.send(String(outdoorrealtiveHumidity).c_str(), "rel", millis());
+    events.send(String(relHum1).c_str(), "rel", millis());
+    events.send(String(soilmoistperc).c_str(), "soilMoist", millis());
+    events.send(String(pressure).c_str(), "pressure", millis());
+    events.send(String(altitude).c_str(), "altitude", millis());
     events.send(String(rainvol).c_str(), "rain", millis());
     events.send(String(windspeed).c_str(), "speed", millis());
     events.send(String(winddir).c_str(), "direction", millis());

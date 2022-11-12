@@ -52,7 +52,10 @@ void wireless(void *param)
     vTaskDelay(1000 / portTICK_PERIOD_MS);
 #ifdef ENABLE_BME680
     mqttClient.publish(pubTopic[2], 0, false, String(relHum1).c_str());
-    mqttClient.publish(pubTopic[3], 0, false, String(temp1).c_str());
+    mqttClient.publish(pubTopic[14], 0, false, String(temp1).c_str());
+    mqttClient.publish(pubTopic[13], 0, false, String(pressure).c_str());
+    //mqttClient.publish(pubTopic[15], 0, false, String(altitude).c_str());
+
 #endif
 #ifdef ENABLE_BH1750
     mqttClient.publish(pubTopic[4], 0, false, String(lux).c_str());
