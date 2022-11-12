@@ -53,22 +53,19 @@ const char *subTopic[] = {
 // Publish Topics
 
 const char *pubTopic[] = {
-    "MQTT/weatherStation/heart",               // 0
-    "MQTT/weatherStation/IP",                  // 1
-    "MQTT/weatherStation/relativeHumidity",    // 2
-    "MQTT/weatherStation/outdoorTemp",         // 3
-    "MQTT/weatherStation/lightIntensity",      // 4
-    "MQTT/weatherStation/dryAirT",             // 5
-    "MQTT/weatherStation/soilmoisture",        // 6
-    "MQTT/weatherStation/rainVolume",          // 7
-    "MQTT/weatherStation/windSpeed",           // 8
-    "MQTT/weatherStation/windDirection",       // 9
-    "MQTT/weatherStation/DO",                  // 10
-    "MQTT/weatherStation/tempBot",             // 11
-    "MQTT/weatherStation/soilT",               // 12
-    "MQTT/weatherStation/atmPressure",         // 13
-    "MQTT/weatherStation/bmeTemp",             // 14
-    "MQTT/weatherStation/altitude"             // 15
-    
-
+    "MQTT/weatherStation/heart",            // 0
+    "MQTT/weatherStation/IP",               // 1
+    "MQTT/weatherStation/relativeHumidity", // 2
+    "MQTT/weatherStation/bmeTemp",      // 3
+    "MQTT/weatherStation/lightIntensity",   // 4
+    "MQTT/weatherStation/dryAirT",          // 5
+    "MQTT/weatherStation/soilmoisture",     // 6
+    "MQTT/weatherStation/rainVolume",       // 7
+    "MQTT/weatherStation/windSpeed",        // 8
+    "MQTT/weatherStation/windDirection",    // 9
+    "MQTT/weatherStation/DO",               // 10
+    "MQTT/weatherStation/tempBot",          // 11
+    "MQTT/weatherStation/soilT",            // 12
+    "MQTT/weatherStation/atmPressure",      // 13
+    "MQTT/weatherStation/altitude"          // 14
 };

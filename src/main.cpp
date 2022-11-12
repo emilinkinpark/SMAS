@@ -7,7 +7,7 @@
 #include "headers.h"
 
 Preferences preferences;
-TaskHandle_t Task1, Task2, Task3; // FreeRTOS Schedule Handler
+TaskHandle_t Task1, Task2; // FreeRTOS Schedule Handler
 
 void sensors(void *param)
 {
@@ -26,7 +26,6 @@ void sensors(void *param)
     rainVol(wsRainclear); // Rain Volume Sensor
     windSpeed();          // Wind Speed Sensor
     windDir();            // Wind Direction Sensor
-    tempHumid();          // Outdoor Humidity and Temperature Sensor
     vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
@@ -36,7 +35,6 @@ void wireless(void *param)
   webserverInit();
   for (;;)
   {
-    serverLoop();
     // Subscribe to MQTT Topics
     int sizearr = sizeof(subTopic) / sizeof(subTopic[0]);
 
@@ -52,9 +50,9 @@ void wireless(void *param)
     vTaskDelay(1000 / portTICK_PERIOD_MS);
 #ifdef ENABLE_BME680
     mqttClient.publish(pubTopic[2], 0, false, String(relHum1).c_str());
-    mqttClient.publish(pubTopic[14], 0, false, String(temp1).c_str());
+    mqttClient.publish(pubTopic[3], 0, false, String(temp1).c_str());
     mqttClient.publish(pubTopic[13], 0, false, String(pressure).c_str());
-    //mqttClient.publish(pubTopic[15], 0, false, String(altitude).c_str());
+    // mqttClient.publish(pubTopic[14], 0, false, String(altitude).c_str());
 
 #endif
 #ifdef ENABLE_BH1750
@@ -94,6 +92,7 @@ void wireless(void *param)
     mqttClient.publish(pubTopic[0], 0, false, "0");
     mqttClient.publish(pubTopic[1], 0, false, WiFi.localIP().toString().c_str());
 #endif
+    serverLoop();
     vTaskDelay(10000 / portTICK_PERIOD_MS);
   }
   // free(subTopic); // Empties Stack Memory
@@ -101,24 +100,15 @@ void wireless(void *param)
 
 bool motorInit = true; // Param for Triggering MOTOR PIN Once during cycle
 
-void webserv(void *param)
-{
-    
-  for(;;)
-  {
-    serverLoop();
-  }
-}
-
 void setup()
 {
   Serial.begin(9600);
-  //ioSetup(); // Testing IO Pins
+  // ioSetup(); // Testing IO Pins
 
   xTaskCreatePinnedToCore(
       sensors,   // Task Function
       "sensors", // Task Name
-      5000,     // Stack Size
+      5000,      // Stack Size
       NULL,      // Task Function Parameters
       1,         // Priority
       &Task1,    // Task Handler
@@ -126,24 +116,16 @@ void setup()
   xTaskCreatePinnedToCore(
       wireless,   // Task Function
       "wireless", // Task Name
-      5000,      // Stack Size
+      5000,       // Stack Size
       NULL,       // Task Function Parameters
       1,          // Priority
       &Task2,     // Task Handler
       0);         // Core
-xTaskCreatePinnedToCore(
-      webserv,   // Task Function
-      "webserv", // Task Name
-      15000,      // Stack Size
-      NULL,       // Task Function Parameters
-      1,          // Priority
-      &Task3,     // Task Handler
-      0);         // Core
 }
-void loop()
-{
+  void loop()
+  {
 
-  // Should Remain Empty
-}
+    // Should Remain Empty
+  }
 
-// Do not forget to change IPAddress of ESP32 before uploading; Check wifi_keys.h for more
+  // Do not forget to change IPAddress of ESP32 before uploading; Check wifi_keys.h for more
