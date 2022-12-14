@@ -116,7 +116,7 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
   }
 #endif
 #ifdef ENABLE_RAINVOLUME
-  if (strcmp(topic, subTopic[4]) == 0)
+  if (strcmp(topic, subTopic[5]) == 0)
   {
     wsRainclear = atof(payload);
   }

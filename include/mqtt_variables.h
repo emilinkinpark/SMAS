@@ -42,12 +42,12 @@ float doHighTemp;
 
 // Subscription Topics
 const char *subTopic[] = {
-    //"MQTT/weatherStation/MODEMC",   // 0
-    //"MQTT/weatherStation/SALINITY", // 1
-    //"MQTT/weatherStation/DOLVL",    // 2
-    //"MQTT/weatherStation/reset",    // 3
-    //"MQTT/weatherStation/CLEAR"     // 4
-    //,"MQTT/weatherStation/rainClear" //
+    "MQTT/weatherStation/MODEMC",    // 0
+    "MQTT/weatherStation/SALINITY",  // 1
+    "MQTT/weatherStation/DOLVL",     // 2
+    "MQTT/weatherStation/reset",     // 3
+    "MQTT/weatherStation/CLEAR",     // 4
+    "MQTT/weatherStation/rainClear"  // 5
 };
 
 // Publish Topics
