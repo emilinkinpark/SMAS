@@ -90,9 +90,9 @@ void windDir() // Wind Direction Sensor
   else
   {
     winddir = 0;
-    #ifdef ENABLE_WINDDIR_DEBUG
+#ifdef ENABLE_WINDDIR_DEBUG
     Serial.println("Wind Direction Sensor error");
-    #endif
+#endif
   }
 
   if (Serial2.available() > 0)
@@ -231,12 +231,23 @@ void DO()
       {
         doTemp = 25.00;
       }
-      
+
       float Conv_DOPerc = floatTOdecimal(o2[7], o2[8], o2[9], o2[10]);
 
       memset(o2, 0, sizeof(o2)); // Empties array
 
-      DOmgl = domglcalc(doTemp, Conv_DOPerc);
+      /*
+      If DS18B20 Temp Sensor Fails; take temperature from internal temp sensor for calcultaion
+      */
+
+      if (device1T == -127)
+      {
+        DOmgl = domglcalc(doTemp, Conv_DOPerc);
+      }
+      else
+      {
+        DOmgl = domglcalc(device1T, Conv_DOPerc);
+      }
 
       if (isnan(DOmgl) != 0.00) // Checks Error Data Received
       {

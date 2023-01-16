@@ -12,11 +12,11 @@ float temp1 = 0.00;
 float relHum1 = 0.00;
 float pressure = 0.00;
 float altitude = 0.00;
-//float gasRes1 = 0.00; // Not Used
+// float gasRes1 = 0.00; // Not Used
 
 // DS18B20 variables
-float dryAirT = 0.00;
-float soilT = 0.00;
+float device1T = 0.00;
+
 // moisture sensor variables
 const int AirVal = 3583;
 const int WaterVal = 1585;
@@ -38,7 +38,7 @@ float outdoorrealtiveHumidity = 0.00;
 float rainvol = 0.00;
 
 // DO sensor variables
-float salinity = 22.60;
+float salinity = 20.00;
 float doTemp = 0.00;
 float averagedomgl = 0.00;
 

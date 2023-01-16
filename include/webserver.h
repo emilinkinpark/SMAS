@@ -24,7 +24,7 @@ void notFound(AsyncWebServerRequest *request)
 void webserverInit() // Server Source, Request and Response
 {
 #ifdef ENABLE_WEBSERV
-if (!SPIFFS.begin(true))
+  if (!SPIFFS.begin(true))
   {
     Serial.println("An Error has occurred while mounting SPIFFS");
     return;
@@ -104,17 +104,9 @@ void serverLoop()
     // Send Events to the client with the Sensor Readings Every 10 seconds
     // events.send("ping", NULL, millis());
     events.send(WiFi.localIP().toString().c_str(), "ip", millis());
-    events.send(String(lux).c_str(), "lux", millis());
-    events.send(String(dryAirT).c_str(), "drya_temp", millis());
-    events.send(String(temp1).c_str(), "a_temp", millis());
-    events.send(String(soilT).c_str(), "s_temp", millis());
-    events.send(String(relHum1).c_str(), "rel", millis());
-    events.send(String(soilmoistperc).c_str(), "soilMoist", millis());
-    events.send(String(pressure).c_str(), "pressure", millis());
-    events.send(String(altitude).c_str(), "altitude", millis());
-    events.send(String(rainvol).c_str(), "rain", millis());
-    events.send(String(windspeed).c_str(), "speed", millis());
-    events.send(String(winddir).c_str(), "direction", millis());
+    events.send(String(device1T).c_str(), "device1T", millis());
+    events.send(String(doTemp).c_str(), "doTemp", millis());
+    events.send(String(averagedomgl).c_str(), "averagedomgl", millis());
     lastTime = millis();
   }
 #endif

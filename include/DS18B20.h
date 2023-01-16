@@ -15,14 +15,13 @@ The modified bit of the code is owned by Rouf Bangladesh Pty Ltd
 
 #ifdef ENABLE_DS18B20
 
-#define ONEWIREBUS 4 // Define OneWire Bus  // Use this for future Use
+#define ONEWIREBUS 4 // Define OneWire Bus
 
 OneWire oneWire(ONEWIREBUS);
 
 DallasTemperature DS18B20(&oneWire);
 
-DeviceAddress dryAirTemp = {0x28, 0x8D, 0xC7, 0x40, 0x26, 0x20, 0x01, 0xF7};
-DeviceAddress soilTemp = {0x28, 0x02, 0xBC, 0x29, 0x26, 0x20, 0x01, 0x27};
+DeviceAddress device1 = {0x28, 0xCE, 0xA6, 0x29, 0x26, 0x20, 0x01, 0x04};
 #endif
 
 #ifdef ENABLE_DS18B20_DEBUG
@@ -50,13 +49,13 @@ float sigCondition(float temp)
     }
 }
 
-void printAddress(DeviceAddress deviceAddress)
+void printAddress(DeviceAddress deviceAddress) // Prints out devices address on the bus
 {
     for (uint8_t i = 0; i < 8; i++)
     {
         if (deviceAddress[i] < 16)
             Serial.print("0");
-        Serial.print(deviceAddress[i], HEX);
+        Serial.println(deviceAddress[i], HEX);
     }
 }
 void ds18b20init()
@@ -70,8 +69,15 @@ void ds18b20Loop()
 {
 #ifdef ENABLE_DS18B20
     DS18B20.requestTemperatures(); // Request DS18B20 Sensor Data
-    dryAirT = DS18B20.getTempC(dryAirTemp);
-    soilT = DS18B20.getTempC(soilTemp);
+    device1T = DS18B20.getTempC(device1);
+    if (device1T == -127)
+    {
+        device1T = 25;
+    }
+    else
+    {
+        // Do Nothing
+    }
     vTaskDelay(5000 / portTICK_PERIOD_MS);
 #endif
 
@@ -91,12 +97,11 @@ void ds18b20Loop()
             // Print the data
             float tempC = DS18B20.getTempC(tempDeviceAddress);
             Serial.print("Temp C: ");
-            Serial.print(tempC);
+            Serial.println(tempC);
         }
     }
-    Serial.print("dryAirT C: ");
-    Serial.println(dryAirT);
-    Serial.print("soilT C: ");
-    Serial.println(soilT);
+    Serial.print("device1T C: ");
+    Serial.println(device1T);
+
 #endif
 }
