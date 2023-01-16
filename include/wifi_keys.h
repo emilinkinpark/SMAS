@@ -24,11 +24,11 @@
 */
 
 /*Note for Future, DHCP might be used in the future, a though a reporting database needs to be setup to keep track of the field devices*/
-IPAddress local_IP(10, 0, 1, 22);
+IPAddress local_IP(10, 0, 1, 5);
 IPAddress gateway(10, 0, 1, 1);
 IPAddress subnet(255, 255, 0, 0);
 
-String hostname = "tank3"; //Use "name".local to access from network, " " means character
+String hostname = "tank"; //Use "name".local to access from network, " " means character
 
 #ifdef ENABLE_WIFI_DEBUG
 #define ssid "MainBase"

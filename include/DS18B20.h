@@ -70,9 +70,9 @@ void ds18b20Loop()
 #ifdef ENABLE_DS18B20
     DS18B20.requestTemperatures(); // Request DS18B20 Sensor Data
     device1T = DS18B20.getTempC(device1);
-    if (device1T == -127)
+    if (device1T == -127.00)
     {
-        device1T = 25;
+        device1T = 25.00;
     }
     else
     {
