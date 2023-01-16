@@ -13,20 +13,12 @@ void sensors(void *param)
 {
   sensInit();    // Initialising All MODBUS Sensors
   i2cInit();     // Initialising Default I2C Pins
-  bme680Init();  // Intialising BME680
-  bh1750Init();  // Initialising BH1750
   ds18b20init(); // Intialising DS18B20
   for (;;)
   {
-    DO();                 // Read DO Sensor
-    bme680Loop();         // BME680
-    bh1750Loop();         // BH1750
-    ds18b20Loop();        // DS18B20
-    moistsensLoop();      // Moisture Sensor
-    rainVol(wsRainclear); // Rain Volume Sensor
-    windSpeed();          // Wind Speed Sensor
-    windDir();            // Wind Direction Sensor
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    ds18b20Loop(); // DS18B20
+    DO(); // Read DO Sensor
+    vTaskDelay(30000 / portTICK_PERIOD_MS);
   }
 }
 void wireless(void *param)
@@ -60,8 +52,7 @@ void wireless(void *param)
 #endif
 
 #ifdef ENABLE_DS18B20
-    mqttClient.publish(pubTopic[5], 0, false, String(dryAirT).c_str());
-    mqttClient.publish(pubTopic[12], 0, false, String(soilT).c_str());
+    mqttClient.publish(pubTopic[5], 0, false, String(device1T).c_str());
 #endif
 
 #ifdef ENABLE_MOISTSENSOR
@@ -122,10 +113,10 @@ void setup()
       &Task2,     // Task Handler
       0);         // Core
 }
-  void loop()
-  {
+void loop()
+{
 
-    // Should Remain Empty
-  }
+  // Should Remain Empty
+}
 
-  // Do not forget to change IPAddress of ESP32 before uploading; Check wifi_keys.h for more
+// Do not forget to change IPAddress of ESP32 before uploading; Check wifi_keys.h for more
