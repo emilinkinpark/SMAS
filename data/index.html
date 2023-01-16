@@ -40,62 +40,21 @@
         </tr>
         <tbody>
             <tr>
-                <td><b>Altitude</b></td>
-                <td id="altitude">altitude</td>
-                <td>m</td>
-            </tr>
-            <tr>
-                <!-- Data on Rows on Table -->
-                <td><b>Light Intensity</b></td>
-                <td id="lux">lux</td>
-                <td>lux</td>
-            </tr>
-            <tr>
-                <td><b>Dry Air Temperature</b></td>
-                <td id="drya_temp">drya_temp</td>
+                <td><b>Underwater Temperature</b></td>
+                <td id="device1T">device1T</td>
                 <td>°C</td>
             </tr>
             <tr>
-                <td><b>Air Temperature</b></td>
-                <td id="a_temp">a_temp</td>
+                <td><b>DO Int Temperature</b></td>
+                <td id="doTemp">doTemp</td>
                 <td>°C</td>
             </tr>
             <tr>
-                <td><b>Soil Temperature</b></td>
-                <td id="s_temp">s_temp</td>
-                <td>°C</td>
+                <td><b>DO</b></td>
+                <td id="averagedomgl">averagedomgl</td>
+                <td>mg/L</td>
             </tr>
-            <tr>
-                <td><b>Humidity</b></td>
-                <td id="rel">rel</td>
-                <td>%</td>
-            </tr>
-            <tr>
-                <td><b>Soil Moisture</b></td>
-                <td id="soilMoist">SoilMoist</td>
-                <td>%</td>
-            </tr>
-            <tr>
-                <td><b>Atm Pressure</b></td>
-                <td id="pressure">pressure</td>
-                <td>hPa</td>
-            </tr>
-            <tr>
-                <td><b>Rain Gauge</b></td>
-                <td id="rain">rain</td>
-                <td>L/m^2</td>
-            </tr>
-            <tr>
-                <td><b>Wind Speed</b></td>
-                <td id="speed">speed</td>
-                <td>m/s</td>
-            </tr>
-            <tr>
-                <td><b>Wind Direction</b></td>
-                <td id="direction">direction</td>
-                <td></td>
-                
-            </tr>
+            
         </tbody>
     </table>
 
@@ -156,11 +115,11 @@
     setInterval(refreshTime, 1000); // Updates every 1000ms (1s)
 
     //Page Update Timer
-    var timeleft = 11;
+    var timeleft = 5;
     setInterval(() => {
         if (timeleft <= 0) {
             //clearInterval(downloadTimer);
-            timeleft = 11;
+            timeleft = 5;
         } else {
             document.getElementById("upcounter").innerHTML = "New Data On Its Way 🚀 " + (timeleft - 1);
         }
@@ -190,50 +149,19 @@
             console.log("ip", e.data);
             ip = e.data;
         }, false);
-        source.addEventListener('altitude', function (e) {
-            console.log("altitude", e.data);
-            document.getElementById("altitude").innerHTML = e.data;
+        source.addEventListener('device1T', function (e) {
+            console.log("device1T", e.data);
+            document.getElementById("device1T").innerHTML = e.data;
         }, false);
-        source.addEventListener('lux', function (e) {
-            console.log("lux", e.data);
-            document.getElementById("lux").innerHTML = e.data;
+        source.addEventListener('doTemp', function (e) {
+            console.log("doTemp", e.data);
+            document.getElementById("doTemp").innerHTML = e.data;
         }, false);
-        source.addEventListener('drya_temp', function (e) {
-            console.log("drya_temp", e.data);
-            document.getElementById("drya_temp").innerHTML = e.data;
+        source.addEventListener('averagedomgl', function (e) {
+            console.log("averagedomgl", e.data);
+            document.getElementById("averagedomgl").innerHTML = e.data;
         }, false);
-        source.addEventListener('a_temp', function (e) {
-            console.log("a_temp", e.data);
-            document.getElementById("a_temp").innerHTML = e.data;
-        }, false);
-        source.addEventListener('s_temp', function (e) {
-            console.log("s_temp", e.data);
-            document.getElementById("s_temp").innerHTML = e.data;
-        }, false);
-        source.addEventListener('rel', function (e) {
-            console.log("rel", e.data);
-            document.getElementById("rel").innerHTML = e.data;
-        }, false);
-        source.addEventListener('soilMoist', function (e) {
-            console.log("soilMoist", e.data);
-            document.getElementById("soilMoist").innerHTML = e.data;
-        }, false);
-        source.addEventListener('pressure', function (e) {
-            console.log("pressure", e.data);
-            document.getElementById("pressure").innerHTML = e.data;
-        }, false);
-        source.addEventListener('rain', function (e) {
-            console.log("rain", e.data);
-            document.getElementById("rain").innerHTML = e.data;
-        }, false);
-        source.addEventListener('speed', function (e) {
-            console.log("speed", e.data);
-            document.getElementById("speed").innerHTML = e.data;
-        }, false);
-        source.addEventListener('direction', function (e) {
-            console.log("direction", e.data);
-            document.getElementById("direction").innerHTML = e.data;
-        }, false);
+     
         // source.addEventListener('lp', function (e) {        // Input field
         //     console.log("lp", e.data);
         //     document.getElementById("inputForm").elements["lp"].value = e.data;
