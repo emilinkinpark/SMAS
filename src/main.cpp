@@ -11,112 +11,115 @@ TaskHandle_t Task1, Task2; // FreeRTOS Schedule Handler
 
 void sensors(void *param)
 {
-  sensInit();    // Initialising All MODBUS Sensors
-  i2cInit();     // Initialising Default I2C Pins
-  ds18b20init(); // Intialising DS18B20
-  for (;;)
-  {
-    ds18b20Loop(); // DS18B20
-    DO(); // Read DO Sensor
-    vTaskDelay(30000 / portTICK_PERIOD_MS);
-  }
+    sensInit();    // Initialising All MODBUS Sensors
+    i2cInit();     // Initialising Default I2C Pins
+    ds18b20init(); // Intialising DS18B20
+    ioSetup();
+    for (;;)
+    {
+        callbellRead();
+        ds18b20Loop(); // DS18B20
+    }
 }
 void wireless(void *param)
 {
-  mqttInit(); // Initialising MQTT Parameters, check mqtt.h for more
-  webserverInit();
-  for (;;)
-  {
-    // Subscribe to MQTT Topics
-    int sizearr = sizeof(subTopic) / sizeof(subTopic[0]);
-
-    for (int i = 0; i < sizearr; i++)
+    mqttInit(); // Initialising MQTT Parameters, check mqtt.h for more
+    webserverInit();
+    for (;;)
     {
-      subscribe(subTopic[i]);
-    }
-    // espReset(); // Resets on MQTT Command
+        // Subscribe to MQTT Topics
+        int sizearr = sizeof(subTopic) / sizeof(subTopic[0]);
+
+        for (int i = 0; i < sizearr; i++)
+        {
+            subscribe(subTopic[i]);
+        }
+        // espReset(); // Resets on MQTT Command
 
 #ifdef ENABLE_MQTT
-    // MQTT Publish
-    mqttClient.publish(pubTopic[0], 0, false, "1"); // Heart 1
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
+        // MQTT Publish
+        mqttClient.publish(pubTopic[0], 0, false, "1"); // Heart 1
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
 #ifdef ENABLE_BME680
-    mqttClient.publish(pubTopic[2], 0, false, String(relHum1).c_str());
-    mqttClient.publish(pubTopic[3], 0, false, String(temp1).c_str());
-    mqttClient.publish(pubTopic[13], 0, false, String(pressure).c_str());
-    // mqttClient.publish(pubTopic[14], 0, false, String(altitude).c_str());
+        mqttClient.publish(pubTopic[2], 0, false, String(relHum1).c_str());
+        mqttClient.publish(pubTopic[3], 0, false, String(temp1).c_str());
+        mqttClient.publish(pubTopic[13], 0, false, String(pressure).c_str());
+        // mqttClient.publish(pubTopic[14], 0, false, String(altitude).c_str());
 
 #endif
 #ifdef ENABLE_BH1750
-    mqttClient.publish(pubTopic[4], 0, false, String(lux).c_str());
+        mqttClient.publish(pubTopic[4], 0, false, String(lux).c_str());
 #endif
 
 #ifdef ENABLE_DS18B20
-    mqttClient.publish(pubTopic[5], 0, false, String(device1T).c_str());
+        mqttClient.publish(pubTopic[16], 0, false, String(device1T).c_str());
+        mqttClient.publish(pubTopic[17], 0, false, String(device2T).c_str());
 #endif
 
 #ifdef ENABLE_MOISTSENSOR
-    mqttClient.publish(pubTopic[6], 0, false, String(soilmoistperc).c_str());
+        mqttClient.publish(pubTopic[6], 0, false, String(soilmoistperc).c_str());
 
 #endif
 
 #ifdef ENABLE_RAINVOLUME
-    mqttClient.publish(pubTopic[7], 0, false, String(rainvol).c_str());
+        mqttClient.publish(pubTopic[7], 0, false, String(rainvol).c_str());
 
 #endif
 
 #ifdef ENABLE_WINDSPEED
-    mqttClient.publish(pubTopic[8], 0, false, String(windspeed).c_str());
+        mqttClient.publish(pubTopic[8], 0, false, String(windspeed).c_str());
 
 #endif
 
 #ifdef ENABLE_WINDDIR
-    mqttClient.publish(pubTopic[9], 0, false, String(winddir).c_str());
+        mqttClient.publish(pubTopic[9], 0, false, String(winddir).c_str());
 
 #endif
 
 #ifdef ENABLE_DO
-    mqttClient.publish(pubTopic[10], 0, false, String(averagedomgl).c_str());
-    mqttClient.publish(pubTopic[11], 0, false, String(doTemp).c_str());
+        mqttClient.publish(pubTopic[10], 0, false, String(averagedomgl).c_str());
+        mqttClient.publish(pubTopic[11], 0, false, String(doTemp).c_str());
+#endif
+#ifdef ENABLE_CALLINGBELL
+        mqttClient.publish(pubTopic[15], 0, false, String(callbell).c_str());
 #endif
 
-    mqttClient.publish(pubTopic[0], 0, false, "0"); // Heart 0
-    mqttClient.publish(pubTopic[1], 0, false, WiFi.localIP().toString().c_str());
+        mqttClient.publish(pubTopic[0], 0, false, "0"); // Heart 0
+        mqttClient.publish(pubTopic[1], 0, false, WiFi.localIP().toString().c_str());
 #endif
-    serverLoop();
-    vTaskDelay(10000 / portTICK_PERIOD_MS);
-  }
-  // free(subTopic); // Empties Stack Memory
+        serverLoop();
+    }
+    // free(subTopic); // Empties Stack Memory
 }
 
 bool motorInit = true; // Param for Triggering MOTOR PIN Once during cycle
 
 void setup()
 {
-  Serial.begin(9600);
-  // ioSetup(); // Testing IO Pins
+    Serial.begin(9600);
+    // ioSetup(); // Testing IO Pins
 
-  xTaskCreatePinnedToCore(
-      sensors,   // Task Function
-      "sensors", // Task Name
-      5000,      // Stack Size
-      NULL,      // Task Function Parameters
-      1,         // Priority
-      &Task1,    // Task Handler
-      1);        // Core
-  xTaskCreatePinnedToCore(
-      wireless,   // Task Function
-      "wireless", // Task Name
-      5000,       // Stack Size
-      NULL,       // Task Function Parameters
-      1,          // Priority
-      &Task2,     // Task Handler
-      0);         // Core
+    xTaskCreatePinnedToCore(
+        sensors,   // Task Function
+        "sensors", // Task Name
+        5000,      // Stack Size
+        NULL,      // Task Function Parameters
+        1,         // Priority
+        &Task1,    // Task Handler
+        1);        // Core
+    xTaskCreatePinnedToCore(
+        wireless,   // Task Function
+        "wireless", // Task Name
+        5000,       // Stack Size
+        NULL,       // Task Function Parameters
+        1,          // Priority
+        &Task2,     // Task Handler
+        0);         // Core
 }
 void loop()
 {
 
-  // Should Remain Empty
+    // Should Remain Empty
 }
 
 // Do not forget to change IPAddress of ESP32 before uploading; Check wifi_keys.h for more

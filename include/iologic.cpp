@@ -34,18 +34,41 @@ bool length(int lengthAllowed, int number)
 #define FAULTPIN 14
 #define SPAREPIN 27
 #define MOTORPIN 12
+#define CALLPIN 18
 
 void ioSetup() // Define IO Pins here
 {
+#ifdef ENABLE_CALLINGBELL
+  pinMode(CALLPIN, INPUT_PULLUP); // Reads CALLING BELL INPUT PIN
+#endif
 
 #ifdef ENABLE_MOTORCONTROL
-  pinMode(FAULTPIN, INPUT_PULLDOWN);   // Read OverLoad Fault
-  //pinMode(RUNSTATPIN, INPUT_PULLDOWN); // Read Blower Run Status
-  pinMode(MOTORPIN, OUTPUT);           // Motor Control Output
+  pinMode(FAULTPIN, INPUT_PULLDOWN); // Read OverLoad Fault
+  // pinMode(RUNSTATPIN, INPUT_PULLDOWN); // Read Blower Run Status
+  pinMode(MOTORPIN, OUTPUT); // Motor Control Output
 #endif
 }
 
-int *motorControl(bool CTRL, bool runstatpin, bool faultpin, bool ctrlpin)  // Needs Rigorous Testing
+void callbellRead()
+{
+#ifdef ENABLE_CALLINGBELL
+  int currentState = 0;
+  int state;
+  currentState = digitalRead(CALLPIN);
+
+  if (currentState == LOW)
+  {
+    state = 1;
+  }
+  else if (currentState == HIGH)
+  {
+    state = 0;
+  }
+  callbell = state;
+#endif
+}
+
+int *motorControl(bool CTRL, bool runstatpin, bool faultpin, bool ctrlpin) // Needs Rigorous Testing
 {
   int stat[2]; // 0 = modemc, 1 = fault, 2= runstat;
   bool fault;

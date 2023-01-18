@@ -16,6 +16,10 @@ float altitude = 0.00;
 
 // DS18B20 variables
 float device1T = 0.00;
+float device2T = 0.00;
+
+//
+int callbell = 0;
 
 // moisture sensor variables
 const int AirVal = 3583;

@@ -40,25 +40,24 @@
         </tr>
         <tbody>
             <tr>
-                <td><b>Underwater Temperature</b></td>
+                <td><b>Office Temperature</b></td>
                 <td id="device1T">device1T</td>
                 <td>°C</td>
             </tr>
             <tr>
-                <td><b>DO Int Temperature</b></td>
-                <td id="doTemp">doTemp</td>
+                <td><b>Storage Temperature</b></td>
+                <td id="device2T">device2T</td>
                 <td>°C</td>
             </tr>
             <tr>
-                <td><b>DO</b></td>
-                <td id="averagedomgl">averagedomgl</td>
-                <td>mg/L</td>
+                <td><b>Call Bell</b></td>
+                <td id="callbell">callbell</td>
             </tr>
-            
+
         </tbody>
     </table>
 
-    
+
 </body>
 
 <footer style="padding-top: 30px; text-align: center;">
@@ -115,11 +114,10 @@
     setInterval(refreshTime, 1000); // Updates every 1000ms (1s)
 
     //Page Update Timer
-    var timeleft = 5;
+    var timeleft = 7;
     setInterval(() => {
         if (timeleft <= 0) {
-            //clearInterval(downloadTimer);
-            timeleft = 5;
+            timeleft = 7;
         } else {
             document.getElementById("upcounter").innerHTML = "New Data On Its Way 🚀 " + (timeleft - 1);
         }
@@ -153,15 +151,16 @@
             console.log("device1T", e.data);
             document.getElementById("device1T").innerHTML = e.data;
         }, false);
-        source.addEventListener('doTemp', function (e) {
-            console.log("doTemp", e.data);
-            document.getElementById("doTemp").innerHTML = e.data;
+        source.addEventListener('device2T', function (e) {
+            console.log("device2T", e.data);
+            document.getElementById("device2T").innerHTML = e.data;
         }, false);
-        source.addEventListener('averagedomgl', function (e) {
-            console.log("averagedomgl", e.data);
-            document.getElementById("averagedomgl").innerHTML = e.data;
+        source.addEventListener('callbell', function (e) {
+            console.log("callbell", e.data);
+            document.getElementById("callbell").innerHTML = e.data;
         }, false);
-     
+
+
         // source.addEventListener('lp', function (e) {        // Input field
         //     console.log("lp", e.data);
         //     document.getElementById("inputForm").elements["lp"].value = e.data;
@@ -180,4 +179,3 @@
 1) Return Last value from ESP32 to Form
 
 -->
-

@@ -19,7 +19,8 @@
  //#define ENABLE_WINDSPEED   // WIND SPEED ENABLE (MODBUS)
  //#define ENABLE_WINDDIR     // WIND DIRECTION ENABLE (MODBUS)
  //#define ENABLE_RAINVOLUME  // RAIN GAUGE ENABLE (MODBUS)
-#define ENABLE_DO          // DO Sensor ENABLE (MODBUS)
+ #define ENABLE_CALLINGBELL // CALLING BELL INPUT ENABLE 
+//#define ENABLE_DO          // DO Sensor ENABLE (MODBUS)
 
 //#define ENABLE_pH   // pH Sensor ENABLE (MODBUS) // DEPRECATED since 2021
 //#define ENABLE_TEMPHUMID // Temperature and Humidity Sensor (MODBUS) //DEPRECATED from 09102021

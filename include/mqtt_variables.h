@@ -42,30 +42,33 @@ float doHighTemp;
 
 // Subscription Topics
 const char *subTopic[] = {
-    "MQTT/TANK/MODEMC",    // 0
-    "MQTT/TANK/SALINITY",  // 1
-    "MQTT/TANK/DOLVL",     // 2
-    "MQTT/TANK/reset",     // 3
-    "MQTT/TANK/CLEAR",     // 4
-    "MQTT/TANK/rainClear"  // 5
+    "MQTT/indoorAir/MODEMC",   // 0
+    "MQTT/indoorAir/SALINITY", // 1
+    "MQTT/indoorAir/DOLVL",    // 2
+    "MQTT/indoorAir/reset",    // 3
+    "MQTT/indoorAir/CLEAR",    // 4
+    "MQTT/indoorAir/rainClear" // 5
 };
 
 // Publish Topics
 
 const char *pubTopic[] = {
-    "MQTT/TANK/heart",            // 0
-    "MQTT/TANK/IP",               // 1
-    "MQTT/TANK/relativeHumidity", // 2
-    "MQTT/TANK/bmeTemp",          // 3
-    "MQTT/TANK/lightIntensity",   // 4
-    "MQTT/TANK/device1T",          // 5
-    "MQTT/TANK/soilmoisture",     // 6
-    "MQTT/TANK/rainVolume",       // 7
-    "MQTT/TANK/windSpeed",        // 8
-    "MQTT/TANK/windDirection",    // 9
-    "MQTT/TANK/DO",               // 10
-    "MQTT/TANK/tempBot",          // 11
-    "MQTT/TANK/soilT",            // 12
-    "MQTT/TANK/atmPressure",      // 13
-    "MQTT/TANK/altitude"          // 14
+    "MQTT/indoorAir/heart",            // 0
+    "MQTT/indoorAir/IP",               // 1
+    "MQTT/indoorAir/relativeHumidity", // 2
+    "MQTT/indoorAir/bmeTemp",          // 3
+    "MQTT/indoorAir/lightIntensity",   // 4
+    "MQTT/indoorAir/device1T",         // 5
+    "MQTT/indoorAir/soilmoisture",     // 6
+    "MQTT/indoorAir/rainVolume",       // 7
+    "MQTT/indoorAir/windSpeed",        // 8
+    "MQTT/indoorAir/windDirection",    // 9
+    "MQTT/indoorAir/DO",               // 10
+    "MQTT/indoorAir/tempBot",          // 11
+    "MQTT/indoorAir/soilT",            // 12
+    "MQTT/indoorAir/atmPressure",      // 13
+    "MQTT/indoorAir/altitude",         // 14
+    "MQTT/indoorAir/callingBell",      // 15
+    "MQTT/indoorAir/office",           // 16
+    "MQTT/indoorAir/storage"           // 17
 };

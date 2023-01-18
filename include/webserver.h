@@ -105,8 +105,8 @@ void serverLoop()
     // events.send("ping", NULL, millis());
     events.send(WiFi.localIP().toString().c_str(), "ip", millis());
     events.send(String(device1T).c_str(), "device1T", millis());
-    events.send(String(doTemp).c_str(), "doTemp", millis());
-    events.send(String(averagedomgl).c_str(), "averagedomgl", millis());
+    events.send(String(device2T).c_str(), "device2T", millis());
+    events.send(String(callbell).c_str(), "callbell", millis());
     lastTime = millis();
   }
 #endif

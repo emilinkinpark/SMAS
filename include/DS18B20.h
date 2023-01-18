@@ -21,7 +21,8 @@ OneWire oneWire(ONEWIREBUS);
 
 DallasTemperature DS18B20(&oneWire);
 
-DeviceAddress device1 = {0x28, 0xCE, 0xA6, 0x29, 0x26, 0x20, 0x01, 0x04};
+DeviceAddress device1 = {0x28, 0xFF, 0x64, 0x1E, 0x31, 0x80, 0x94, 0x41}; // OfficeTemp
+DeviceAddress device2 = {0x28, 0xFF, 0x64, 0x1E, 0x31, 0x87, 0xD3, 0xEA}; // StorageTemp
 #endif
 
 #ifdef ENABLE_DS18B20_DEBUG
@@ -70,9 +71,19 @@ void ds18b20Loop()
 #ifdef ENABLE_DS18B20
     DS18B20.requestTemperatures(); // Request DS18B20 Sensor Data
     device1T = DS18B20.getTempC(device1);
+    device2T = DS18B20.getTempC(device2);
+
     if (device1T == -127.00)
     {
         device1T = 25.00;
+    }
+    else
+    {
+        // Do Nothing
+    }
+     if (device2T == -127.00)
+    {
+        device2T = 25.00;
     }
     else
     {
