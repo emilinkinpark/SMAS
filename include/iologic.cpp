@@ -52,15 +52,14 @@ void ioSetup() // Define IO Pins here
 void callbellRead()
 {
 #ifdef ENABLE_CALLINGBELL
-  int currentState = 0;
   int state;
-  currentState = digitalRead(CALLPIN);
+  int currentState = digitalRead(CALLPIN);
 
-  if (currentState == LOW)
+  if (currentState == 0)
   {
     state = 1;
   }
-  else if (currentState == HIGH)
+  else if (currentState == 1)
   {
     state = 0;
   }
