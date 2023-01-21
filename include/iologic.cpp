@@ -52,18 +52,28 @@ void ioSetup() // Define IO Pins here
 void callbellRead()
 {
 #ifdef ENABLE_CALLINGBELL
-  int state;
+
   int currentState = digitalRead(CALLPIN);
 
   if (currentState == 0)
   {
-    state = 1;
+    pressedTime = millis();
   }
   else if (currentState == 1)
   {
-    state = 0;
+    releasedTime = millis();
   }
-  callbell = state;
+  long pressDuration = releasedTime - pressedTime;
+
+  if (pressDuration < SHORT_PRESS_TIME)
+  {
+    callbell == 1;
+  }
+  else
+  {
+    callbell == 0;
+  }
+
 #endif
 }
 
