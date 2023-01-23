@@ -19,8 +19,6 @@ float device1T = 0.00;
 float device2T = 0.00;
 
 //Calling Bell
-unsigned long pressedTime = 0;
-unsigned long releasedTime = 0;
 bool callbell = 0;
 
 // moisture sensor variables

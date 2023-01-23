@@ -39,7 +39,7 @@ void wireless(void *param)
 #ifdef ENABLE_MQTT
         // MQTT Publish
         mqttClient.publish(pubTopic[0], 0, false, "1"); // Heart 1
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        vTaskDelay(100 / portTICK_PERIOD_MS);
 #ifdef ENABLE_BME680
         mqttClient.publish(pubTopic[2], 0, false, String(relHum1).c_str());
         mqttClient.publish(pubTopic[3], 0, false, String(temp1).c_str());

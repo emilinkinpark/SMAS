@@ -36,6 +36,11 @@ bool length(int lengthAllowed, int number)
 #define MOTORPIN 12
 #define CALLPIN 18
 
+int lastState = LOW; // the previous state from the input pin
+unsigned long pressedTime = 0;
+unsigned long releasedTime = 0;
+#define SHORT_PRESS_TIME 500 // 500 milliseconds
+
 void ioSetup() // Define IO Pins here
 {
 #ifdef ENABLE_CALLINGBELL
@@ -43,7 +48,7 @@ void ioSetup() // Define IO Pins here
 #endif
 }
 
-void callbellRead(bool *state, uint8_t pin)
+void callbellRead(bool *state, uint8_t pin)   // Example of variable output from a function in C
 {
 #ifdef ENABLE_CALLINGBELL
 
