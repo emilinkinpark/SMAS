@@ -17,7 +17,7 @@ void sensors(void *param)
     ioSetup();
     for (;;)
     {
-        callbellRead();
+        callbellRead(&callbell, CALLPIN);
         ds18b20Loop(); // DS18B20
     }
 }

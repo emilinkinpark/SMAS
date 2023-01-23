@@ -19,10 +19,9 @@ float device1T = 0.00;
 float device2T = 0.00;
 
 //Calling Bell
-#define SHORT_PRESS_TIME 500
 unsigned long pressedTime = 0;
 unsigned long releasedTime = 0;
-int callbell = 0;
+bool callbell = 0;
 
 // moisture sensor variables
 const int AirVal = 3583;
