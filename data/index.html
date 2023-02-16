@@ -1,9 +1,13 @@
-<!-- This webpage is developed to monitor Local Weather Conditions -->
+<!-- This webpage is developed to monitor Local Weather Conditions 
+Change Name of the page under Script Variable TitleHeader
+-->
+
 <!DOCTYPE html>
 <html lang="en-AU">
 
 <head>
-    <title>Weather Station</title>
+
+    <title id="pageTitle">Title</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Comment out before flashing into ESP32 -->
@@ -27,11 +31,15 @@
             <button type="button" style="display: inline-block;height:50px;width:100px;border-radius: 8px;"
                 onclick="ota()">OTA</button>
         </div>
-        <h1
+        <h1 id="header"
             style="text-align: center; height: auto; background-color: darkcyan; color:whitesmoke;font-size: 50px; font-weight:bold;">
-            WEATHER MONITOR</h1>
+            Header 1</h1>
+        <h2 id="ipAddr"
+            style="text-align: center; height: auto; color:darkcyan;font-size: 20px;">IP
+        </h2>
+
     </div>
-    <table class="table table-striped table-hover" style="width: 30%; margin-left: auto; margin-right: auto;">
+    <table class=" table table-striped table-hover" style="width: 30%; margin-left: auto; margin-right: auto;">
         <tr>
             <!-- Name of Columns on Table -->
             <th style="font-weight: bold; color: darkcyan;">PARAMETERS</th>
@@ -54,11 +62,11 @@
                 <td id="averagedomgl">averagedomgl</td>
                 <td>mg/L</td>
             </tr>
-            
+
         </tbody>
     </table>
 
-    
+
 </body>
 
 <footer style="padding-top: 30px; text-align: center;">
@@ -71,6 +79,11 @@
 
 <script> //Javascript Functions
     var ip;
+
+    var tileHeader = "TEST";  // Change this to suitable name
+    document.getElementById("header").innerHTML = tileHeader;
+    document.getElementById("pageTitle").innerHTML = tileHeader;
+
 
     function checkAddress(buttoName) { // button function
         var checkbox = document.getElementById("inputForm").elements[buttoName];
@@ -115,11 +128,11 @@
     setInterval(refreshTime, 1000); // Updates every 1000ms (1s)
 
     //Page Update Timer
-    var timeleft = 5;
+    var timeleft = 7;
     setInterval(() => {
         if (timeleft <= 0) {
             //clearInterval(downloadTimer);
-            timeleft = 5;
+            timeleft = 7;
         } else {
             document.getElementById("upcounter").innerHTML = "New Data On Its Way 🚀 " + (timeleft - 1);
         }
@@ -148,6 +161,8 @@
         source.addEventListener('ip', function (e) {  //ESP32 IP
             console.log("ip", e.data);
             ip = e.data;
+            document.getElementById("ipAddr").innerHTML = ip;
+
         }, false);
         source.addEventListener('device1T', function (e) {
             console.log("device1T", e.data);
@@ -161,7 +176,7 @@
             console.log("averagedomgl", e.data);
             document.getElementById("averagedomgl").innerHTML = e.data;
         }, false);
-     
+
         // source.addEventListener('lp', function (e) {        // Input field
         //     console.log("lp", e.data);
         //     document.getElementById("inputForm").elements["lp"].value = e.data;
@@ -180,4 +195,3 @@
 1) Return Last value from ESP32 to Form
 
 -->
-
