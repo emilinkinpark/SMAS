@@ -19,7 +19,7 @@
 10.0.1.14 -> indoorAir         OTA Address 10.0.1.14:4000/update
 10.0.1.19 -> Empty
 10.0.1.20 -> Tank1             OTA Address http://10.0.1.20/update
-10.0.1.21 -> Tank2             OTA Address http://10.0.1.21/update
+10.0.1.21 -> test             OTA Address http://10.0.1.21/update
 10.0.1.22 -> Tank3             OTA Address http://10.0.1.22/update
 */
 
@@ -28,8 +28,7 @@ IPAddress local_IP(10, 0, 1, 5);
 IPAddress gateway(10, 0, 1, 1);
 IPAddress subnet(255, 255, 0, 0);
 
-String hostname = "test"; //Use "name".local to access from network, " " means character
-
+String hostname = "test"; //Use "hostname".local to access from network
 #ifdef ENABLE_WIFI_DEBUG
 #define ssid "MainBase"
 #define pass "Glory001!1"

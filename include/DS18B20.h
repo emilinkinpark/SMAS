@@ -3,7 +3,7 @@ All rights to the unmodified code goes to Rui Santos from Random Nerd Tutorials
 
 The modified bit of the code is owned by Rouf Bangladesh Pty Ltd
 
-*** A pull up Resistor 470 Ohm Must be connected to Data Pin of DS1280;
+*** A pull up Resistor 4k7 Ohm Must be connected to Data Pin of DS1280;
 
 
 */
@@ -21,7 +21,8 @@ OneWire oneWire(ONEWIREBUS);
 
 DallasTemperature DS18B20(&oneWire);
 
-DeviceAddress device1 = {0x28, 0x0F, 0xE1, 0x20, 0x26, 0x20, 0x01, 0x87};
+DeviceAddress device1 = {0x28, 0x0F, 0xE1, 0x20, 0x26, 0x20, 0x01, 0x87}; // TANK2
+//DeviceAddress device1 = {0x28, 0xCE, 0xA6, 0x29, 0x26, 0x20, 0x01, 0x04}; // TANK3
 #endif
 
 #ifdef ENABLE_DS18B20_DEBUG

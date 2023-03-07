@@ -89,7 +89,6 @@ void wireless(void *param)
   // free(subTopic); // Empties Stack Memory
 }
 
-bool motorInit = true; // Param for Triggering MOTOR PIN Once during cycle
 
 void setup()
 {
