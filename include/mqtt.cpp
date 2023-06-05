@@ -203,7 +203,7 @@ void mqtt_topic_declaration() // Stores Topics into variables
 }
 
 
-void mqttKepwarepublish(float var, const char *tag, const char *publish_topic) // Keepware Formate
+void mqttKepwarepublish(float var, const char *tag, const char *publish_topic) // Keepware Format
 {
   char temp[8];
 
